@@ -1,15 +1,16 @@
-import './App.css'
-import { Button } from './components/ui/button';
+import "./App.css";
+import { Button } from "./components/ui/button";
+import { TooltipProvider } from "./components/ui/tooltip";
+import Dashboard from "./pages/Dashboard";
 
 function App() {
-
   return (
     <>
-      <Button variant='link' className='text-red-500'>
-        click
-      </Button>
+      <TooltipProvider>
+        <Dashboard />
+      </TooltipProvider>
     </>
   );
 }
 
-export default App
+export default App;
