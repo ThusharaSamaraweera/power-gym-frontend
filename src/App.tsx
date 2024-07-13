@@ -1,5 +1,4 @@
 import "./App.css";
-import { Button } from "./components/ui/button";
 import { TooltipProvider } from "./components/ui/tooltip";
 import Dashboard from "./pages/Dashboard";
 
