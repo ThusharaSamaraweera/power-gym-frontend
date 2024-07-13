@@ -6,6 +6,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Login from "./pages/Login.tsx";
 import { ClerkProvider } from "@clerk/clerk-react";
 import Profile from "./pages/Profile.tsx";
+import SignUp from "./pages/SignUp.tsx";
 
 // Import your publishable key
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
@@ -28,6 +29,10 @@ const router = createBrowserRouter([
   {
     path: "/login",
     element: <Login />,
+  },
+  {
+    path: "/sign-up",
+    element: <SignUp />,
   },
 ]);
 

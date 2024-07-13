@@ -10,13 +10,17 @@ import {
   DropdownMenuTrigger,
 } from "../components/ui/dropdown-menu";
 import { Button } from "../components/ui/button";
+import { SignOutButton, useUser } from "@clerk/clerk-react";
 
 const Dashboard = () => {
-    const navigate = useNavigate()
+  const navigate = useNavigate();
+  const user = useUser()
+  console.log("🚀 ~ file: Dashboard.tsx:18 ~ Dashboard ~ user:", user)
 
-    const handleOnClick = () => {
-        navigate('/profile')
-    }   
+  const handleOnClickProfile = () => {
+    navigate("/profile");
+  };
+
   return (
     <div className='flex min-h-screen w-full flex-col bg-muted/40'>
       <aside className='fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r bg-background sm:flex'>
@@ -51,9 +55,13 @@ const Dashboard = () => {
             <DropdownMenuContent align='end'>
               <DropdownMenuLabel>My Account</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={handleOnClick}>Profile</DropdownMenuItem>
+              <DropdownMenuItem onClick={handleOnClickProfile}>Profile</DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>Logout</DropdownMenuItem>
+              <DropdownMenuItem>
+                <div>
+                  <SignOutButton redirectUrl="/login" />
+                </div>
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </header>
