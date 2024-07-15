@@ -1,5 +1,5 @@
-import { SignIn } from '@clerk/clerk-react';
-import React from 'react'
+import { SignIn } from "@clerk/clerk-react";
+import React from "react";
 
 const Login = () => {
   return (
@@ -7,6 +7,6 @@ const Login = () => {
       <SignIn />
     </div>
   );
-}
+};
 
-export default Login
+export default Login;

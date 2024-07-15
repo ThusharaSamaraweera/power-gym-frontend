@@ -1,4 +1,4 @@
-import { Home, Package2, User } from "lucide-react";
+import { Home, Package2, User, NotepadText } from "lucide-react";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../components/ui/tooltip";
 import {
@@ -14,8 +14,8 @@ import { SignOutButton, useUser } from "@clerk/clerk-react";
 
 const Dashboard = () => {
   const navigate = useNavigate();
-  const user = useUser()
-  console.log("🚀 ~ file: Dashboard.tsx:18 ~ Dashboard ~ user:", user)
+  const user = useUser();
+  console.log("🚀 ~ file: Dashboard.tsx:18 ~ Dashboard ~ user:", user);
 
   const handleOnClickProfile = () => {
     navigate("/profile");
@@ -34,13 +34,25 @@ const Dashboard = () => {
           <Tooltip>
             <TooltipTrigger asChild>
               <Link
-                to='#'
+                to='/'
                 className='flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8'>
                 <Home className='h-5 w-5' />
                 <span className='sr-only'>Dashboard</span>
               </Link>
             </TooltipTrigger>
             <TooltipContent side='right'>Dashboard</TooltipContent>
+          </Tooltip>
+
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Link
+                to={"/exercise-plan-form"}
+                className='flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8'>
+                <NotepadText className='h-5 w-5' />
+                <span className='sr-only'>Exercise Plan form</span>
+              </Link>
+            </TooltipTrigger>
+            <TooltipContent side='right'>Exercise Plan form</TooltipContent>
           </Tooltip>
         </nav>
       </aside>
@@ -59,7 +71,7 @@ const Dashboard = () => {
               <DropdownMenuSeparator />
               <DropdownMenuItem>
                 <div>
-                  <SignOutButton redirectUrl="/login" />
+                  <SignOutButton redirectUrl='/login' />
                 </div>
               </DropdownMenuItem>
             </DropdownMenuContent>
