@@ -54,6 +54,18 @@ const Dashboard = () => {
             </TooltipTrigger>
             <TooltipContent side='right'>Exercise Plan form</TooltipContent>
           </Tooltip>
+
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Link
+                to={"/all-users"}
+                className='flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8'>
+                <User className='h-5 w-5' />
+                <span className='sr-only'>All Users</span>
+              </Link>
+            </TooltipTrigger>
+            <TooltipContent side='right'>All Users</TooltipContent>
+          </Tooltip>
         </nav>
       </aside>
       <div className='flex flex-col sm:gap-4 sm:py-4 sm:pl-14'>

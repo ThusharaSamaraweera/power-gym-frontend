@@ -8,6 +8,7 @@ import { ClerkProvider } from "@clerk/clerk-react";
 import Profile from "./pages/Profile.tsx";
 import SignUp from "./pages/SignUp.tsx";
 import ExercisePlanForm from "./pages/ExercisePlanForm.tsx";
+import AllUsers from "./pages/AllUsers.tsx";
 
 // Import your publishable key
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
@@ -29,6 +30,10 @@ const router = createBrowserRouter([
         path: "/exercise-plan-form",
         element: <ExercisePlanForm />,
       },
+      {
+        path: "/all-users",
+        element: <AllUsers />,
+      }
     ],
   },
   {
