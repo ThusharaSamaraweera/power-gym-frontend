@@ -9,6 +9,7 @@ import Profile from "./pages/Profile.tsx";
 import SignUp from "./pages/SignUp.tsx";
 import ExercisePlanForm from "./pages/ExercisePlanForm.tsx";
 import AllUsers from "./pages/AllUsers.tsx";
+import ExercisePlans from "./pages/ExercisePlans.tsx";
 
 // Import your publishable key
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
@@ -33,7 +34,11 @@ const router = createBrowserRouter([
       {
         path: "/all-users",
         element: <AllUsers />,
-      }
+      },
+      {
+        path: "/exercise-plans",
+        element: <ExercisePlans />,
+      },
     ],
   },
   {
