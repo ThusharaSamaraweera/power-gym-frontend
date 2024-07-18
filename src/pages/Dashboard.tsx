@@ -1,4 +1,4 @@
-import { Home, Package2, User, NotepadText, Waypoints } from "lucide-react";
+import { Home, Package2, User, NotepadText, Waypoints, ListTodo } from "lucide-react";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../components/ui/tooltip";
 import {
@@ -77,6 +77,18 @@ const Dashboard = () => {
               </Link>
             </TooltipTrigger>
             <TooltipContent side='right'>All Users</TooltipContent>
+          </Tooltip>
+
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Link
+                to={"/requested-plans"}
+                className='flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8'>
+                <ListTodo className='h-5 w-5' />
+                <span className='sr-only'>Request Plans</span>
+              </Link>
+            </TooltipTrigger>
+            <TooltipContent side='right'>Request Plans</TooltipContent>
           </Tooltip>
         </nav>
       </aside>
