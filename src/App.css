@@ -1,44 +1,77 @@
-
-
-/* #root {
-  max-width: 1280px;
+body {
+  box-sizing: border-box;
   margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  overflow: hidden;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.page {
+  /* background-color: black; */
+  padding: 0;
+  /* width: max-content; */
+  /* height: 100%;   */
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.container {
+  margin: 1rem auto;
+  width: 60%;
+  height: 90%; 
+  border-radius: 5px;
+  overflow: auto;
+  padding: 15px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.dnd-list {
+  display: flex;
+  flex-direction: row;
+  height: 35px;
+  margin-bottom: 10px;
 }
 
-.card {
-  padding: 2em;
+.input-item {
+  position: relative;
+  height: 100%;
+  flex-basis: 85%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-left: auto;
+  margin-bottom: 10px;
+  font-size: calc(10px + 2vmin);
+  color: black;
+  border: none;
+  border-radius: 5px;
+  cursor: move;
+  padding-left: 10px;
 }
 
-.read-the-docs {
-  color: #888;
-} */
+.over {
+  transform: scale(1.01);
+  border: 1px dashed #eee;
+}
+
+.addButton {
+  display: flex;
+  align-items: center;
+  margin: auto;
+  line-height: 26px;
+  border: none;
+  color: black;
+  border-radius: 50%;
+  font-size: 24px;
+}
+
+.delButton {
+  display: flex;
+  align-items: center;
+  color: darkgrey;
+  margin-left: 10px;
+  height: 37px;
+  width: 30px;
+  font-size: 20px;
+  font-weight: bolder;
+  cursor: pointer;
+}
+
+
