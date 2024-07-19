@@ -39,7 +39,7 @@ const ExercisePlan = () => {
       <div className='basis-1/2'>
         <Card x-chunk='dashboard-06-chunk-0'>
           <CardContent>
-            <Accordion type='single' collapsible className='w-full'>
+            <Accordion type='multiple' className='w-full'>
               {PLAN?.map((dayExercise) => {
                 return <OneDay dayExercise={dayExercise} />;
               })}

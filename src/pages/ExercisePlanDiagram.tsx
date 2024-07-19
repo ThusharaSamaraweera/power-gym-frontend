@@ -2,9 +2,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../components/ui/card";
+import { ScrollArea } from "../components/ui/scroll-area";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../components/ui/accordion";
+import { GripVertical } from "lucide-react";
 
 const ExercisePlanDiagram = () => {
-  let list: any[] = [1, 2, 3, 4, 5, 6, 7, ""];
+  let list: any[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
   let sourceElement: any = null;
 
   const [sortedList, setSortedList] = React.useState(list);
@@ -117,10 +120,10 @@ const ExercisePlanDiagram = () => {
   const listItems = () => {
     return sortedList.map((item, i) => (
       <div key={i} className='dnd-list border-black border-2 border-solid'>
-        <input
+        <div
           id={i.toString()}
-          type='text'
-          className='input-item'
+          // type='text'
+          className='input-item flex flex-row justify-between'
           draggable='true'
           onDragStart={handleDragStart}
           onDragOver={handleDragOver}
@@ -129,30 +132,46 @@ const ExercisePlanDiagram = () => {
           onDrop={handleDrop}
           onDragEnd={handleDragEnd}
           onChange={handleChange}
-          placeholder='Enter text here'
-          value={sortedList[i]}
-        />
-        <div id={i.toString()} className='delButton' onClick={handleDelete}>
-          X
+          // placeholder='Enter text here'
+          // value={sortedList[i]}
+        >
+          <div
+          
+          >
+            <GripVertical className='cursor-pointer' />
+          </div>
+          {sortedList[i]}
+          <div id={i.toString()} className='delButton' onClick={handleDelete}>
+            X
+          </div>
         </div>
       </div>
     ));
   };
 
   return (
-    <div className='page w-100'>
-      <Card x-chunk='dashboard-06-chunk-0'>
+    <div className='page w-100 h-screen'>
+      <Card x-chunk='dashboard-06-chunk-0' className='h-5/6'>
         <CardHeader>
           <CardTitle>Exercise Plan Creation Diagram</CardTitle>
           <CardDescription></CardDescription>
         </CardHeader>
-        <CardContent>
-          <div className='container '>
-            {listItems()}
-            <button className='addButton text-white' onClick={() => newLine()}>
-              +
-            </button>
-          </div>
+        <CardContent className='h-full w-1/2'>
+          <Accordion type='multiple' className='w-full border-gray-300 border-2 p-2 border-solid'>
+            <AccordionItem value={"monday"}>
+              <AccordionTrigger>{"monday"}</AccordionTrigger>
+              <AccordionContent>
+                <ScrollArea className='h-96 w-100 rounded-md'>
+                  <div className='container '>
+                    {listItems()}
+                    <button className='addButton' onClick={() => newLine()}>
+                      +
+                    </button>
+                  </div>
+                </ScrollArea>
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
         </CardContent>
       </Card>
     </div>
