@@ -10,13 +10,6 @@ export const PLAN: IDayExercisePlan[] = [
         },
       },
       {
-        exerciseName: "Leg Press",
-        frequency: {
-          sets: 3,
-          reps: 10,
-        },
-      },
-      {
         exerciseName: "Kettlebell Swings",
         frequency: {
           sets: 3,
@@ -29,23 +22,28 @@ export const PLAN: IDayExercisePlan[] = [
           sets: 3,
           reps: 10,
         },
-      },
+      }
+    ],
+  },
+  {
+    day: "Tuesday",
+    exercises: [
       {
-        exerciseName: "Kettlebell Swings",
+        exerciseName: "Bench Press",
         frequency: {
           sets: 3,
           reps: 10,
         },
       },
       {
-        exerciseName: "Leg Press",
+        exerciseName: "Shoulder Press",
         frequency: {
           sets: 3,
           reps: 10,
         },
       },
       {
-        exerciseName: "Kettlebell Swings",
+        exerciseName: "Tricep Extension",
         frequency: {
           sets: 3,
           reps: 10,
@@ -54,7 +52,7 @@ export const PLAN: IDayExercisePlan[] = [
     ],
   },
   {
-    day: "Tuesday",
+    day: "Wednesday",
     exercises: [
       {
         exerciseName: "Bench Press",
