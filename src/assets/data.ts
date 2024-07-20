@@ -48,7 +48,8 @@ interface RequestedPlan {
   id: number;
   name: string;
   bodyHealthInfo: BodyHealthInfoDto;
-  createdAt: string
+  createdAt: string;
+  plan: IDayExercisePlan[];
 }
 
 export const REQUESTED_PLANS_DATA: RequestedPlan[] = [
@@ -101,8 +102,79 @@ export const REQUESTED_PLANS_DATA: RequestedPlan[] = [
       },
     },
     createdAt: "2023-07-12 10:42 AM",
-  },
+    plan: [
+      {
+        day: "Monday",
+        exercises: [
+          {
+            exerciseName: "Squats",
+            frequency: {
+              sets: 3,
+              reps: 10,
+            },
+          },
+          {
+            exerciseName: "Kettlebell Swings",
+            frequency: {
+              sets: 3,
+              reps: 10,
+            },
+          },
+          {
+            exerciseName: "Leg Press",
+            frequency: {
+              sets: 3,
+              reps: 10,
+            },
+          },
+        ],
+      },
+      {
+        day: "Tuesday",
+        exercises: [
 
+        ],
+      },
+      {
+        day: "Wednesday",
+        exercises: [
+          {
+            exerciseName: "Bench Press",
+            frequency: {
+              sets: 3,
+              reps: 10,
+            },
+          },
+          {
+            exerciseName: "Shoulder Press",
+            frequency: {
+              sets: 3,
+              reps: 10,
+            },
+          },
+          {
+            exerciseName: "Tricep Extension",
+            frequency: {
+              sets: 3,
+              reps: 10,
+            },
+          },
+        ],
+      },
+      {
+        day: "Thursday",
+      },
+      {
+        day: "Friday",
+      },
+      {
+        day: "Saturday",
+      },
+      {
+        day: "Sunday",
+      },
+    ],
+  },
 ];
 
 export const PLAN: IDayExercisePlan[] = [
@@ -196,5 +268,5 @@ export interface IExercise {
 
 export interface IDayExercisePlan {
   day: string;
-  exercises: IExercise[];
+  exercises?: IExercise[];
 }
