@@ -5,145 +5,56 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../co
 import { ScrollArea } from "../components/ui/scroll-area";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../components/ui/accordion";
 import { GripVertical } from "lucide-react";
+import { IExercise, PLAN } from "../components/molecules/data";
+import { STRENGTH_EXERCISES } from "../constant";
+import AntdSelect from "../components/ui/AntdSelect";
 
 const ExercisePlanDiagram = () => {
-  let list: any[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
-  let sourceElement: any = null;
+  const [plan, setPlan] = React.useState(PLAN);
 
-  const [sortedList, setSortedList] = React.useState(list);
-
-  /* add a new entry at the end of the list.  */
-  const newLine = () => {
-    console.log(sortedList);
-    setSortedList(sortedList.concat(""));
-  };
-
-  /* change opacity for the dragged item. 
-  remember the source item for the drop later */
-  const handleDragStart = (event: any) => {
-    event.target.style.opacity = 0.5;
-    sourceElement = event.target;
-    event.dataTransfer.effectAllowed = "move";
-  };
-
-  /* do not trigger default event of item while passing (e.g. a link) */
-  const handleDragOver = (event: any) => {
-    event.preventDefault();
-    event.dataTransfer.dropEffect = "move";
-  };
-
-  /* add class .over while hovering other items */
-  const handleDragEnter = (event: any) => {
-    event.target.classList.add("over");
-  };
-
-  /* remove class .over when not hovering over an item anymore*/
-  const handleDragLeave = (event: any) => {
-    event.target.classList.remove("over");
-  };
-
-  const handleDrop = (event: any) => {
-    /* prevent redirect in some browsers*/
-    event.stopPropagation();
-
-    /* only do something if the dropped on item is 
-    different to the dragged item*/
-    if (sourceElement !== event.target) {
-      /* remove dragged item from list */
-      const list = sortedList.filter((item, i) => i.toString() !== sourceElement.id);
-
-      /* this is the removed item */
-      const removed = sortedList.filter((item, i) => i.toString() === sourceElement.id)[0];
-
-      /* insert removed item after this number. */
-      let insertAt = Number(event.target.id);
-
-      console.log("list with item removed", list);
-      console.log("removed:  line", removed);
-      console.log("insertAt index", insertAt);
-
-      let tempList = [];
-
-      /* if dropped at last item, don't increase target id by +1. 
-         max-index is arr.length */
-      if (insertAt >= list.length) {
-        tempList = list.slice(0).concat(removed);
-        setSortedList(tempList);
-        event.target.classList.remove("over");
-      } else if (insertAt < list.length) {
-        /* original list without removed item until the index it was removed at */
-        tempList = list.slice(0, insertAt).concat(removed);
-
-        console.log("tempList", tempList);
-        console.log("insert the rest: ", list.slice(insertAt));
-
-        /* add the remaining items to the list */
-        const newList = tempList.concat(list.slice(insertAt));
-        console.log("newList", newList);
-
-        /* set state to display on page */
-        setSortedList(newList);
-        event.target.classList.remove("over");
+  const addNewExercise = (day: string) => {
+    const newPlan = plan?.map((item) => {
+      if (item?.day === day) {
+        item?.exercises.push({ exerciseName: "", frequency: { sets: 0, reps: 0 } });
       }
-    } else console.log("nothing happened");
-    event.target.classList.remove("over");
-  };
-
-  const handleDragEnd = (event: any) => {
-    event.target.style.opacity = 1;
-    console.log("-------------------------------------------------------------");
-  };
-
-  /* log changes in current input field */
-  const handleChange = (event: any) => {
-    event.preventDefault();
-    console.log("event.target.value", event.target.value);
-
-    /* create new list where everything stays the same except that the current
-    item replaces the existing value at this index */
-    const list = sortedList.map((item, i) => {
-      if (i !== Number(event.target.id)) {
-        return item;
-      } else return event.target.value;
+      return item;
     });
-    setSortedList(list);
+    setPlan(newPlan);
   };
 
-  /* filter list where only items with id unequal to current id's are allowed */
-  const handleDelete = (event: any) => {
-    event.preventDefault();
-    const list = sortedList.filter((item, i) => i !== Number(event.target.id));
-    console.log(event.target.id);
-    setSortedList(list);
+  const selectExercise = (value: string, index: number, day: string) => {
+    const newPlan = plan?.map((item) => {
+      if (item?.day === day) {
+        item.exercises[index].exerciseName = value;
+      }
+      return item;
+    });
+    setPlan(newPlan);
   };
-  /* create list of items */
-  const listItems = () => {
-    return sortedList.map((item, i) => (
-      <div key={i} className='dnd-list border-black border-2 border-solid'>
-        <div
-          id={i.toString()}
-          // type='text'
-          className='input-item flex flex-row justify-between'
-          draggable='true'
-          onDragStart={handleDragStart}
-          onDragOver={handleDragOver}
-          onDragEnter={handleDragEnter}
-          onDragLeave={handleDragLeave}
-          onDrop={handleDrop}
-          onDragEnd={handleDragEnd}
-          onChange={handleChange}
-          // placeholder='Enter text here'
-          // value={sortedList[i]}
-        >
-          <div
-          
-          >
-            <GripVertical className='cursor-pointer' />
-          </div>
-          {sortedList[i]}
-          <div id={i.toString()} className='delButton' onClick={handleDelete}>
-            X
-          </div>
+
+  const handleDelete = (index: number, day: string) => {
+    const newPlan = plan?.map((item) => {
+      if (item?.day === day) {
+        item?.exercises.splice(index, 1);
+      }
+      return item;
+    });
+    setPlan(newPlan);
+  };
+
+  const listItems = (exercises: IExercise[], day: string) => {
+    return exercises.map((item, i) => (
+      <div key={i} className='flex flex-row px-4 py-2 justify-around border-black border-2 border-solid'>
+        <AntdSelect
+          key={i}
+          options={STRENGTH_EXERCISES.map((exercise) => {
+            return { value: exercise, label: exercise };
+          })}
+          value={item?.exerciseName}
+          onChange={(value) => selectExercise(value, i, day)}
+        />
+        <div id={i.toString()} className='delButton' onClick={() => handleDelete(i, day)}>
+          X
         </div>
       </div>
     ));
@@ -157,21 +68,27 @@ const ExercisePlanDiagram = () => {
           <CardDescription></CardDescription>
         </CardHeader>
         <CardContent className='h-full w-1/2'>
-          <Accordion type='multiple' className='w-full border-gray-300 border-2 p-2 border-solid'>
-            <AccordionItem value={"monday"}>
-              <AccordionTrigger>{"monday"}</AccordionTrigger>
-              <AccordionContent>
-                <ScrollArea className='h-96 w-100 rounded-md'>
-                  <div className='container '>
-                    {listItems()}
-                    <button className='addButton' onClick={() => newLine()}>
-                      +
-                    </button>
-                  </div>
-                </ScrollArea>
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
+          <ScrollArea className='h-5/6 w-100 rounded-md'>
+            {plan?.map((item) => {
+              return (
+                <Accordion type='multiple' className='w-full border-gray-300 border-2 p-2 border-solid'>
+                  <AccordionItem value={item?.day}>
+                    <AccordionTrigger>{item?.day}</AccordionTrigger>
+                    <AccordionContent>
+                      {/* <ScrollArea className='h-fit w-100 rounded-md'> */}
+                        <div className='container '>
+                          {listItems(item?.exercises, item?.day)}
+                          <button className='addButton' onClick={() => addNewExercise(item?.day)}>
+                            +
+                          </button>
+                        </div>
+                      {/* </ScrollArea> */}
+                    </AccordionContent>
+                  </AccordionItem>
+                </Accordion>
+              );
+            })}
+          </ScrollArea>
         </CardContent>
       </Card>
     </div>

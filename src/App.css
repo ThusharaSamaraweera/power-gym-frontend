@@ -21,14 +21,14 @@ body {
   padding: 15px;
 }
 
-.dnd-list {
+/* .dnd-list {
   display: flex;
   flex-direction: row;
   height: 35px;
   margin-bottom: 10px;
-}
+} */
 
-.input-item {
+/* .input-item {
   position: relative;
   height: 100%;
   flex-basis: 85%;
@@ -44,7 +44,7 @@ body {
   border-radius: 5px;
   cursor: move;
   padding-left: 10px;
-}
+} */
 
 .over {
   transform: scale(1.01);

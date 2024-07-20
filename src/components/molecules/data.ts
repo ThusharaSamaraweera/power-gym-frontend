@@ -17,7 +17,35 @@ export const PLAN: IDayExercisePlan[] = [
         },
       },
       {
-        exerciseName: "Leg Curl",
+        exerciseName: "Kettlebell Swings",
+        frequency: {
+          sets: 3,
+          reps: 10,
+        },
+      },
+      {
+        exerciseName: "Leg Press",
+        frequency: {
+          sets: 3,
+          reps: 10,
+        },
+      },
+      {
+        exerciseName: "Kettlebell Swings",
+        frequency: {
+          sets: 3,
+          reps: 10,
+        },
+      },
+      {
+        exerciseName: "Leg Press",
+        frequency: {
+          sets: 3,
+          reps: 10,
+        },
+      },
+      {
+        exerciseName: "Kettlebell Swings",
         frequency: {
           sets: 3,
           reps: 10,
