@@ -1,8 +1,8 @@
 import React from "react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../ui/accordion";
-import { IDayExercisePlan, PLAN } from "./data";
 import { Card, CardContent } from "../ui/card";
 import imageSrc from "../../assets/Arnold Press.jpg";
+import { IDayExercisePlan, PLAN } from "../../assets/data";
 
 interface IOneDayProps {
   dayExercise: IDayExercisePlan;

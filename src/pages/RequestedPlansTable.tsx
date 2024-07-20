@@ -3,7 +3,9 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from ".
 import { REQUESTED_PLANS_DATA } from "../assets/data";
 
 const RequestedPlansTable = () => {
-  const handleOnClickRow = (planId: number) => {};
+  const handleOnClickRow = (planId: number) => {
+    
+  };
 
   return (
     <div>

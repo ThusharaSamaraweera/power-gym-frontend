@@ -43,7 +43,15 @@ const router = createBrowserRouter([
       },
       {
         path: "/requested-plans",
-        element: <ExercisePlanDiagram />,
+        element: <RequestedPlansTable />,
+        children: [
+
+          {
+            path: ':id',
+            element: <ExercisePlanDiagram />
+            
+          }
+        ]
       },
     ],
   },
