@@ -6,14 +6,18 @@ import { STRENGTH_EXERCISES } from "../constant";
 import AntdSelect from "../components/ui/AntdSelect";
 import { Input } from "../components/ui/input";
 import { Button } from "../components/ui/button";
-import { IExercise, PLAN } from "../assets/data";
+import { IExercise, PLAN, REQUESTED_PLANS_DATA } from "../assets/data";
+import { useParams } from "react-router-dom";
 
 const ExercisePlanDiagram = () => {
-  const [plan, setPlan] = React.useState(PLAN);
+  const { planId } = useParams();
+
+  const [plan, setPlan] = React.useState(planId ? REQUESTED_PLANS_DATA.find((item) => item.id === parseInt(planId))?.plan : []);
 
   const addNewEmptyExercise = (day: string) => {
     const newPlan = plan?.map((item) => {
       if (item?.day === day) {
+        if (!item?.exercises) item.exercises = [];
         item?.exercises.push({ exerciseName: "", frequency: { sets: 1, reps: 1 } });
       }
       return item;
@@ -23,7 +27,7 @@ const ExercisePlanDiagram = () => {
 
   const selectExercise = (value: string, index: number, day: string) => {
     const newPlan = plan?.map((item) => {
-      if (item?.day === day) {
+      if (item?.day === day && item?.exercises) {
         item.exercises[index].exerciseName = value;
       }
       return item;
@@ -33,8 +37,8 @@ const ExercisePlanDiagram = () => {
 
   const handleDelete = (index: number, day: string) => {
     const newPlan = plan?.map((item) => {
-      if (item?.day === day) {
-        item?.exercises.splice(index, 1);
+      if (item?.day === day && item?.exercises) {
+        item?.exercises?.splice(index, 1);
       }
       return item;
     });
@@ -43,7 +47,7 @@ const ExercisePlanDiagram = () => {
 
   const handleOnChangeSet = (value: string, index: number, day: string) => {
     const newPlan = plan?.map((item) => {
-      if (item?.day === day) {
+      if (item?.day === day && item?.exercises && item?.exercises?.length > 0) {
         item.exercises[index].frequency.sets = parseInt(value);
       }
       return item;
@@ -53,7 +57,7 @@ const ExercisePlanDiagram = () => {
 
   const handleOnChangeReps = (value: string, index: number, day: string) => {
     const newPlan = plan?.map((item) => {
-      if (item?.day === day) {
+      if (item?.day === day && item?.exercises && item?.exercises?.length > 0) {
         item.exercises[index].frequency.reps = parseInt(value);
       }
       return item;
@@ -61,14 +65,13 @@ const ExercisePlanDiagram = () => {
     setPlan(newPlan);
   };
 
-  const handleOnSave = () => 
-  {
-    console.log('plan', plan);
-  }
+  const handleOnSave = () => {
+    console.log("plan", plan);
+  };
 
-  const listItems = (exercises: IExercise[], day: string) => {
-    return exercises.map((item, i) => (
-      <div key={i} className='flex flex-row px-4 py-2 justify-around items-center border-black border-2 border-solid'>
+  const listItems = (exercises: IExercise[] | undefined, day: string) => {
+    return exercises?.map((item, i) => (
+      <div key={i} className='flex flex-row my-2 px-4 py-2 justify-around items-center border-gray-600 border-2 border-solid'>
         <AntdSelect
           key={i}
           options={STRENGTH_EXERCISES.map((exercise) => {
@@ -107,7 +110,7 @@ const ExercisePlanDiagram = () => {
       <Card x-chunk='dashboard-06-chunk-0' className='h-5/6'>
         <CardHeader>
           <div className='flex flex-row w-full'>
-            <CardTitle>Exercise Plan Creation Diagram</CardTitle>
+            <CardTitle>Create Exercise Plan</CardTitle>
             <Button className='ml-auto' variant='default' size='sm' onClick={handleOnSave}>
               Save
             </Button>
@@ -115,7 +118,7 @@ const ExercisePlanDiagram = () => {
           <CardDescription></CardDescription>
         </CardHeader>
         <CardContent className='h-full w-1/2'>
-          <ScrollArea className='h-5/6 w-100 rounded-md'>
+          <ScrollArea className='h-5/6 w-100 rounded-md px-2'>
             {plan?.map((item) => {
               return (
                 <Accordion type='multiple' className='w-full border-gray-300 p-2 border-solid'>
@@ -123,11 +126,12 @@ const ExercisePlanDiagram = () => {
                     <AccordionTrigger>{item?.day}</AccordionTrigger>
                     <AccordionContent>
                       {/* <ScrollArea className='h-fit w-100 rounded-md'> */}
-                      <div className='container '>
+                      <div className=' w-full px-4 gap-3'>
                         {listItems(item?.exercises, item?.day)}
-                        <button className='addButton' onClick={() => addNewEmptyExercise(item?.day)}>
-                          +
-                        </button>
+
+                        <Button className='flex items-center mt-2 mx-auto' variant='default' size='sm' onClick={() => addNewEmptyExercise(item?.day)}>
+                          Add
+                        </Button>
                       </div>
                       {/* </ScrollArea> */}
                     </AccordionContent>

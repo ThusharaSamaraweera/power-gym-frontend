@@ -14,7 +14,7 @@ const OneDay: React.FC<IOneDayProps> = ({ dayExercise }) => {
       <AccordionTrigger>{dayExercise?.day}</AccordionTrigger>
       <AccordionContent>
         <ul>
-          {dayExercise?.exercises.map((exercise) => {
+          {dayExercise?.exercises?.map((exercise) => {
             return (
               <div className='flex'>
                 <img src={imageSrc} className='w-24' />
@@ -41,6 +41,7 @@ const ExercisePlan = () => {
           <CardContent>
             <Accordion type='multiple' className='w-full'>
               {PLAN?.map((dayExercise) => {
+                
                 return <OneDay dayExercise={dayExercise} />;
               })}
             </Accordion>

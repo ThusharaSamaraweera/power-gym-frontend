@@ -12,14 +12,14 @@ body {
   /* height: 100%;   */
 }
 
-.container {
+/* .container {
   margin: 1rem auto;
   width: 60%;
   height: 90%; 
   border-radius: 5px;
   overflow: auto;
   padding: 15px;
-}
+} */
 
 /* .dnd-list {
   display: flex;
@@ -51,7 +51,7 @@ body {
   border: 1px dashed #eee;
 }
 
-.addButton {
+/* .addButton {
   display: flex;
   align-items: center;
   margin: auto;
@@ -60,7 +60,7 @@ body {
   color: black;
   border-radius: 50%;
   font-size: 24px;
-}
+} */
 
 .delButton {
   display: flex;
