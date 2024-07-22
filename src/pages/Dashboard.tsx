@@ -1,4 +1,4 @@
-import { Home, Package2, User, NotepadText } from "lucide-react";
+import { Home, Package2, User, NotepadText, Waypoints, ListTodo } from "lucide-react";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../components/ui/tooltip";
 import {
@@ -58,6 +58,18 @@ const Dashboard = () => {
           <Tooltip>
             <TooltipTrigger asChild>
               <Link
+                to={"/exercise-plans"}
+                className='flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8'>
+                <Waypoints className='h-5 w-5' />
+                <span className='sr-only'>Exercise Plan</span>
+              </Link>
+            </TooltipTrigger>
+            <TooltipContent side='right'>Exercise Plan</TooltipContent>
+          </Tooltip>
+
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Link
                 to={"/all-users"}
                 className='flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8'>
                 <User className='h-5 w-5' />
@@ -66,9 +78,21 @@ const Dashboard = () => {
             </TooltipTrigger>
             <TooltipContent side='right'>All Users</TooltipContent>
           </Tooltip>
+
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Link
+                to={"/requested-plans"}
+                className='flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8'>
+                <ListTodo className='h-5 w-5' />
+                <span className='sr-only'>Request Plans</span>
+              </Link>
+            </TooltipTrigger>
+            <TooltipContent side='right'>Request Plans</TooltipContent>
+          </Tooltip>
         </nav>
       </aside>
-      <div className='flex flex-col sm:gap-4 sm:py-4 sm:pl-14'>
+      <div className='flex flex-col sm:gap-4 sm:py-4 sm:pl-20 sm:pr-8 min-h-screen'>
         <header className='sticky justify-end top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6'>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
