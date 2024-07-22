@@ -19,13 +19,27 @@ const ExercisePlanForm = () => {
     tricepsCircumference: "",
     supraIliacCircumference: "",
     gender: "",
+    resetingHeartRate: 0,
+    estimatedMaximumHeartRate: 0,
+    maximumWeight: 0,
+    reps: 0,
+    oneRepMax: 0,
+    sitAndReachTest: 0,
+    muscularEnduranceTest: 0,
+    cardiorespiratoryEnduranceTest: 0,
+    dailySteps: 0,
+    hydrationLevel: 0,
+    fitnessGoals: [],
+    exercisePreferences: [],
+    medicalHistory: [],
+    averageHoursofSleep: 0,
   };
 
   const [measurements, setMeasurements] = useState(initialMeasurements);
   const [bmi, setBmi] = useState("");
   const [bodyDensity, setBodyDensity] = useState("");
   const [bodyFatPercentage, setBodyFatPercentage] = useState("");
-  const [whr, setWhr] = useState("");
+  const [waistToHipRadio, setWaistToHipRadio] = useState("");
 
   useEffect(() => {
     calculateDerivedValues();
@@ -52,42 +66,54 @@ const ExercisePlanForm = () => {
       setBmi(bmiValue);
 
       // Replace these with the actual formulas you want to use
-      const bodyDensityValue = (1.2 * bmiValue + 0.23 * (measurements.gender === "male" ? 10 : 20) - 5.4).toFixed(2);
+      const bodyDensityValue = (1.2 * parseFloat(bmiValue) + 0.23 * (measurements.gender === "male" ? 10 : 20) - 5.4).toFixed(2);
       setBodyDensity(bodyDensityValue);
-      const bodyFatPercentageValue = (1.2 * bmiValue + 0.23 * (measurements.gender === "male" ? 10 : 20) - 5.4).toFixed(2);
+      const bodyFatPercentageValue = (1.2 * parseFloat(bmiValue) + 0.23 * (measurements.gender === "male" ? 10 : 20) - 5.4).toFixed(2);
       setBodyFatPercentage(bodyFatPercentageValue);
     }
 
     if (waist && hip) {
       const whrValue = (hip / waist).toFixed(2);
-      setWhr(whrValue);
+      setWaistToHipRadio(whrValue);
+    }
+
+    if(measurements?.resetingHeartRate) {
+      const estimatedMaximumHeartRate = 220 - measurements?.resetingHeartRate;
+      setMeasurements({...measurements, estimatedMaximumHeartRate: estimatedMaximumHeartRate});
+    }
+
+    if(measurements?.maximumWeight && measurements?.reps) {
+      const oneRepMax = Math.round(measurements?.maximumWeight * (1 + (measurements?.reps * 0.0333 )));
+      setMeasurements({...measurements, oneRepMax: oneRepMax});
     }
   };
 
-  const handleSubmit = (e) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handleSubmit = (e: any) => {
     e.preventDefault();
     const data = {
       ...measurements,
       bmi,
       bodyDensity,
       bodyFatPercentage,
-      whr,
+      waistToHipRadio,
     };
-    // Send data to backend
-    fetch("/api/exercise-plan", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("Success:", data);
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
+    console.log("🚀 ~ file: ExercisePlanForm.tsx:94 ~ handleSubmit ~ data:", data)
+  //   // Send data to backend
+  //   fetch("/api/exercise-plan", {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify(data),
+  //   })
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       console.log("Success:", data);
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error:", error);
+  //     });
   };
 
   const handleClear = () => {
@@ -95,7 +121,7 @@ const ExercisePlanForm = () => {
     setBmi("");
     setBodyDensity("");
     setBodyFatPercentage("");
-    setWhr("");
+    setWaistToHipRadio("");
   };
 
   return (
@@ -106,7 +132,7 @@ const ExercisePlanForm = () => {
           <CardDescription>Please fill the form, according to attributes we will provide an exercise plan.</CardDescription>
         </CardHeader>
         <CardContent className='w-full h-full'>
-          <ScrollArea className='w-100 rounded-md px-2'>
+          <ScrollArea className='w-100 h-5/6 rounded-md px-2'>
             <form onSubmit={handleSubmit} className='px-2 gap-4'>
               <p className='font-bold text-lg my-4'>Anthropometric Measurements</p>
               <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4  w-full items-center gap-4'>
@@ -168,7 +194,6 @@ const ExercisePlanForm = () => {
                 </div>
               </div>
               <p className='font-bold text-lg mt-4'>Body Composition</p>
-
               <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 w-full items-center gap-4 mt-4'>
                 <div className='flex flex-col space-y-1.5'>
                   <Label>BMI</Label>
@@ -183,12 +208,80 @@ const ExercisePlanForm = () => {
                   <Input value={bodyFatPercentage} readOnly />
                 </div>
                 <div className='flex flex-col space-y-1.5'>
-                  <Label>Waist-to-Hip Ratio (WHR)</Label>
-                  <Input value={whr} readOnly />
+                  <Label>Waist-to-Hip Ratio</Label>
+                  <Input value={waistToHipRadio} readOnly />
                 </div>
               </div>
-             
+              <p className='font-bold text-lg mt-4'> Cardiovascular Fitness</p>
+              <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 w-full items-center gap-4 mt-4'>
+                <div className='flex flex-col space-y-1.5'>
+                  <Label>Reseting Heart Rate</Label>
+                  <Input id='resetingHeartRate' value={measurements?.resetingHeartRate} type='number' onChange={handleChange} />
+                </div>
+                <div className='flex flex-col space-y-1.5'>
+                  <Label>Estimated Maximum Heart Rate</Label>
+                  <Input value={measurements?.estimatedMaximumHeartRate} readOnly />
+                </div>
+                <div className='flex flex-col space-y-1.5'>
+                  <Label>Waximum Wdeight</Label>
+                  <Input id='maximumWeight' value={measurements?.maximumWeight} type='number' onChange={handleChange} />
+                </div>
+                <div className='flex flex-col space-y-1.5'>
+                  <Label>Reps</Label>
+                  <Input id='reps' value={measurements?.reps} type='number' onChange={handleChange} />
+                </div>
+                <div className='flex flex-col space-y-1.5'>
+                  <Label>One Rep Max</Label>
+                  <Input value={measurements?.oneRepMax} readOnly />
+                </div>
+              </div>
+              <p className='font-bold text-lg mt-4'>Flexibility</p>
+              <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 w-full items-center gap-4 mt-4'>
+                <div className='flex flex-col space-y-1.5'>
+                  <Label>Sit-and-Reach Test</Label>
+                  <Input id='sitAndReachTest' value={measurements?.sitAndReachTest} type='number' onChange={handleChange} />
+                </div>
+              </div>
+              <p className='font-bold text-lg mt-4'>Endurance</p>
+              <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 w-full items-center gap-4 mt-4'>
+                <div className='flex flex-col space-y-1.5'>
+                  <Label>Muscular Endurance Test</Label>
+                  <Input id='muscularEnduranceTest' value={measurements?.muscularEnduranceTest} type='number' onChange={handleChange} />
+                </div>
 
+                <div className='flex flex-col space-y-1.5'>
+                  <Label>Cardiorespiratory Endurance Tests</Label>
+                  <Input
+                    id='cardiorespiratoryEnduranceTest'
+                    value={measurements?.cardiorespiratoryEnduranceTest}
+                    type='number'
+                    onChange={handleChange}
+                  />
+                </div>
+              </div>
+              <p className='font-bold text-lg mt-4'> Physical Activity Levels</p>
+              <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 w-full items-center gap-4 mt-4'>
+                <div className='flex flex-col space-y-1.5'>
+                  <Label>Daily Steps</Label>
+                  <Input id='dailySteps' value={measurements?.dailySteps} type='number' onChange={handleChange} />
+                </div>
+
+                <div className='flex flex-col space-y-1.5'>
+                  <Label>Hydration Level</Label>
+                  <Input id='hydrationLevel' value={measurements?.hydrationLevel} type='number' onChange={handleChange} />
+                </div>
+              </div>
+
+              {/* TODO: Add Goals and Preferences, Health Conditions */}
+
+              <p className='font-bold text-lg mt-4'>Lifestyle Factor</p>
+              <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 w-full items-center gap-4 mt-4'>
+                <div className='flex flex-col space-y-1.5'>
+                  <Label>Average hours of sleep per night</Label>
+                  <Input id='averageHoursofSleep' value={measurements?.averageHoursofSleep} type='number' onChange={handleChange} />
+                </div>
+
+              </div>
 
               <CardFooter className='flex justify-between mt-3'>
                 <Button variant='outline' onClick={handleClear}>
