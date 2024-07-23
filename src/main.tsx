@@ -12,6 +12,7 @@ import AllUsers from "./pages/AllUsers.tsx";
 import ExercisePlans from "./pages/ExercisePlans.tsx";
 import RequestedPlansTable from "./pages/RequestedPlansTable.tsx";
 import ExercisePlanDiagram from "./pages/ExercisePlanDiagram.tsx";
+import AllExercisePlans from "./pages/AllExercisePlans.tsx";
 
 // Import your publishable key
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
@@ -39,12 +40,20 @@ const router = createBrowserRouter([
       },
       {
         path: "/exercise-plans",
-        element: <ExercisePlans />,
+        children: [
+          {
+            path: "",
+            index: true,
+            element: <ExercisePlans />,
+          },
+          {
+            path: "/exercise-plans/all",
+            element: <AllExercisePlans />,
+          },
+        ],
       },
       {
         path: "/requested-plans",
-        // element: <RequestedPlansTable />,
-
         children: [
           {
             path: "",
