@@ -11,11 +11,18 @@ import {
 } from "../components/ui/dropdown-menu";
 import { Button } from "../components/ui/button";
 import { SignOutButton, useUser } from "@clerk/clerk-react";
+import { useEffect } from "react";
 
 const Dashboard = () => {
   const navigate = useNavigate();
   const user = useUser();
   console.log("🚀 ~ file: Dashboard.tsx:18 ~ Dashboard ~ user:", user);
+
+  useEffect(() => {
+    if (!user?.isSignedIn && user?.isLoaded) {
+      return navigate("/login");
+    }
+  }, [user?.isSignedIn]);
 
   const handleOnClickProfile = () => {
     navigate("/profile");

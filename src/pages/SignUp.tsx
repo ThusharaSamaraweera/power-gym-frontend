@@ -81,26 +81,26 @@ const SignUp = () => {
         {!pendingVerification && (
           <form onSubmit={handleSubmit} className='space-y-4 md:space-y-6'>
             <div>
-              <label htmlFor='first_name' className='block mb-2 text-sm font-medium text-gray-900'>
+              <label htmlFor='firstName' className='block mb-2 text-sm font-medium text-gray-900'>
                 First Name
               </label>
               <input
                 type='text'
-                name='first_name'
-                id='first_name'
+                name='firstName'
+                id='firstName'
                 onChange={(e) => setFirstName(e.target.value)}
                 className='bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5'
                 required={true}
               />
             </div>
             <div>
-              <label htmlFor='last_name' className='block mb-2 text-sm font-medium text-gray-900'>
+              <label htmlFor='lastName' className='block mb-2 text-sm font-medium text-gray-900'>
                 Last Name
               </label>
               <input
                 type='text'
-                name='last_name'
-                id='last_name'
+                name='lastName'
+                id='lastName'
                 onChange={(e) => setLastName(e.target.value)}
                 className='bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5'
                 required={true}
@@ -159,11 +159,6 @@ const SignUp = () => {
       </div>
     </div>
   );
-  // return (
-  //   <div className='h-screen w-full flex justify-center items-center'>
-  //     <SignUpClerk signInUrl="/login"  />
-  //   </div>
-  // );
 };
 
 export default SignUp;
