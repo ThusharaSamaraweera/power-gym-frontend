@@ -12,17 +12,33 @@ import {
 import { Button } from "../components/ui/button";
 import { SignOutButton, useUser } from "@clerk/clerk-react";
 import { useEffect } from "react";
+import { useAppDispatch, useAppSelector } from "../state/hooks";
+import userService from "../services/user.service";
+import { setUser } from "../state/global/globalSlice";
 
 const Dashboard = () => {
   const navigate = useNavigate();
   const user = useUser();
-  console.log("🚀 ~ file: Dashboard.tsx:18 ~ Dashboard ~ user:", user);
+  const userInState = useAppSelector((state) => state.global.user);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (!user?.isSignedIn && user?.isLoaded) {
-      return navigate("/login");
+    async function getUser() {
+      if (!user?.user?.id) throw new Error("User not found");
+      const u = await userService.getUserByClerkId(user?.user?.id);
+      if (u) {
+        console.log(u);
+        dispatch(setUser(u));
+      }
     }
-  }, [user?.isSignedIn]);
+
+    if (!user?.isSignedIn && user?.isLoaded) {
+      dispatch(setUser(null))
+      return navigate("/login");
+    } else if (user?.isSignedIn && user?.isLoaded && !userInState) {
+      getUser();
+    }
+  }, [user?.isSignedIn, userInState, user, dispatch, navigate]);
 
   const handleOnClickProfile = () => {
     navigate("/profile");
