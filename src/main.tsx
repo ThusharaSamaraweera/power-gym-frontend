@@ -12,6 +12,9 @@ import AllUsers from "./pages/AllUsers.tsx";
 import ExercisePlans from "./pages/ExercisePlans.tsx";
 import RequestedPlansTable from "./pages/RequestedPlansTable.tsx";
 import ExercisePlanDiagram from "./pages/ExercisePlanDiagram.tsx";
+import AllExercisePlans from "./pages/AllExercisePlans.tsx";
+import { Provider as ReduxProvider } from "react-redux";
+import store from "./state/store.ts";
 
 // Import your publishable key
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
@@ -39,12 +42,20 @@ const router = createBrowserRouter([
       },
       {
         path: "/exercise-plans",
-        element: <ExercisePlans />,
+        children: [
+          {
+            path: "",
+            index: true,
+            element: <ExercisePlans />,
+          },
+          {
+            path: "/exercise-plans/all",
+            element: <AllExercisePlans />,
+          },
+        ],
       },
       {
         path: "/requested-plans",
-        // element: <RequestedPlansTable />,
-
         children: [
           {
             path: "",
@@ -71,8 +82,10 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
-      <RouterProvider router={router} />
+    <ClerkProvider publishableKey={PUBLISHABLE_KEY} signUpFallbackRedirectUrl={"/login"}>
+      <ReduxProvider store={store}>
+        <RouterProvider router={router} />
+      </ReduxProvider>
     </ClerkProvider>
   </React.StrictMode>
 );
