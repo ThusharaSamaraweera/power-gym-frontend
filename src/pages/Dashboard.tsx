@@ -15,6 +15,8 @@ import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../state/hooks";
 import userService from "../services/user.service";
 import { setUser } from "../state/global/globalSlice";
+import { UserRoles } from "../models";
+import ProtectedWrapper from "../components/wrappers/ProtectedWrapper";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -23,17 +25,27 @@ const Dashboard = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
+    console.log("🚀 ~ file: Dashboard.tsx:31 ~ getUser ~ user:", user)
     async function getUser() {
-      if (!user?.user?.id) throw new Error("User not found");
-      const u = await userService.getUserByClerkId(user?.user?.id);
-      if (u) {
-        console.log(u);
-        dispatch(setUser(u));
+      try {
+        if (!user?.user?.id) throw new Error("User not found");
+        const u = await userService.getUserByClerkId(user?.user?.id);
+        if (u) {
+          console.log(u);
+          dispatch(setUser(u));
+        } else {
+          dispatch(setUser(null));
+          return navigate("/login");
+        }
+      } catch (error) {
+        console.error(error);
+        dispatch(setUser(null));
+        return navigate("/login");
       }
     }
 
     if (!user?.isSignedIn && user?.isLoaded) {
-      dispatch(setUser(null))
+      dispatch(setUser(null));
       return navigate("/login");
     } else if (user?.isSignedIn && user?.isLoaded && !userInState) {
       getUser();
@@ -66,17 +78,19 @@ const Dashboard = () => {
             <TooltipContent side='right'>Dashboard</TooltipContent>
           </Tooltip>
 
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Link
-                to={"/exercise-plan-form"}
-                className='flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8'>
-                <NotepadText className='h-5 w-5' />
-                <span className='sr-only'>Exercise Plan form</span>
-              </Link>
-            </TooltipTrigger>
-            <TooltipContent side='right'>Exercise Plan form</TooltipContent>
-          </Tooltip>
+          <ProtectedWrapper roles={[UserRoles.ADMIN]}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Link
+                  to={"/exercise-plan-form"}
+                  className='flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8'>
+                  <NotepadText className='h-5 w-5' />
+                  <span className='sr-only'>Exercise Plan form</span>
+                </Link>
+              </TooltipTrigger>
+              <TooltipContent side='right'>Exercise Plan form</TooltipContent>
+            </Tooltip>
+          </ProtectedWrapper>
 
           <Tooltip>
             <TooltipTrigger asChild>
