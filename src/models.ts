@@ -1,4 +1,5 @@
 export interface IUser extends SignupUser {
+  _id: string;
   dateOfBirth?: string;
   gender?: string;
   image?: string;
@@ -81,4 +82,19 @@ export interface BodyHealthInfoPayload {
   bodyHealthInfo: BodyHealthInfoDto;
   note?: string;
   verifiedBy: string;
+}
+
+
+export enum BODY_HEALTH_INFO_RECORD_STATUS {
+  PENDING = "PENDING",
+  COMPLETED = "COMPLETED",
+}
+
+export interface IRequestedPlan extends BodyHealthInfoPayload {
+  _id: string;
+  memberId: string;
+  status: BODY_HEALTH_INFO_RECORD_STATUS;
+  createdAt: string;
+  updatedAt: string;
+  WorkoutPlan: any
 }

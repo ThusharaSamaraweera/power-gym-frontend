@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../components/ui/card";
 import { ScrollArea } from "../components/ui/scroll-area";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../components/ui/accordion";
@@ -6,13 +6,56 @@ import { STRENGTH_EXERCISES } from "../constant";
 import AntdSelect from "../components/ui/AntdSelect";
 import { Input } from "../components/ui/input";
 import { Button } from "../components/ui/button";
-import { IExercise, PLAN, REQUESTED_PLANS_DATA } from "../assets/data";
+import { IDayExercisePlan, IExercise, PLAN, REQUESTED_PLANS_DATA } from "../assets/data";
 import { useParams } from "react-router-dom";
+import { useAppSelector } from "../state/hooks";
+
+const initialPlan: IDayExercisePlan[] = [
+  {
+    day: "Monday",
+    exercises: [],
+  },
+  {
+    day: "Tuesday",
+    exercises: [],
+  },
+  {
+    day: "Wednesday",
+    exercises: [],
+  },
+  {
+    day: "Thursday",
+    exercises: [],
+  },
+  {
+    day: "Friday",
+    exercises: [],
+  },
+  {
+    day: "Saturday",
+    exercises: [],
+  },
+  {
+    day: "Sunday",
+    exercises: [],
+  },
+];
 
 const ExercisePlanDiagram = () => {
   const { planId } = useParams();
+  const requestedPlans = useAppSelector((state) => state.global.requestedPlans);
+  const [plan, setPlan] = React.useState(initialPlan);
 
-  const [plan, setPlan] = React.useState(planId ? REQUESTED_PLANS_DATA.find((item) => item.id === parseInt(planId))?.plan : []);
+  console.log("🚀 ~ file: ExercisePlanDiagram.tsx:45 ~ ExercisePlanDiagram ~ planId:", planId);
+
+  useEffect(() => {
+    if (planId) {
+      const requestedPlan = requestedPlans?.find((item) => item._id === planId);
+      if (requestedPlan?.WorkoutPlan) {
+        setPlan(requestedPlan?.WorkoutPlan);
+      }
+    }
+  }, [planId, requestedPlans]);
 
   const addNewEmptyExercise = (day: string) => {
     const newPlan = plan?.map((item) => {
