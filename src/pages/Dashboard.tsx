@@ -10,7 +10,7 @@ import {
   DropdownMenuTrigger,
 } from "../components/ui/dropdown-menu";
 import { Button } from "../components/ui/button";
-import { SignOutButton, useUser } from "@clerk/clerk-react";
+import { SignOutButton, useUser, useClerk } from "@clerk/clerk-react";
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../state/hooks";
 import userService from "../services/user.service";
@@ -23,9 +23,10 @@ const Dashboard = () => {
   const user = useUser();
   const userInState = useAppSelector((state) => state.global.user);
   const dispatch = useAppDispatch();
+  const { signOut } = useClerk();
 
   useEffect(() => {
-    console.log("🚀 ~ file: Dashboard.tsx:31 ~ getUser ~ user:", user)
+    console.log("🚀 ~ file: Dashboard.tsx:31 ~ getUser ~ user:", user);
     async function getUser() {
       try {
         if (!user?.user?.id) throw new Error("User not found");
@@ -34,11 +35,13 @@ const Dashboard = () => {
           console.log(u);
           dispatch(setUser(u));
         } else {
+          signOut();
           dispatch(setUser(null));
           return navigate("/login");
         }
       } catch (error) {
         console.error(error);
+        signOut();
         dispatch(setUser(null));
         return navigate("/login");
       }
@@ -46,11 +49,13 @@ const Dashboard = () => {
 
     if (!user?.isSignedIn && user?.isLoaded) {
       dispatch(setUser(null));
+      signOut();
+
       return navigate("/login");
     } else if (user?.isSignedIn && user?.isLoaded && !userInState) {
       getUser();
     }
-  }, [user?.isSignedIn, userInState, user, dispatch, navigate]);
+  }, [user?.isSignedIn, dispatch, navigate]);
 
   const handleOnClickProfile = () => {
     navigate("/profile");
