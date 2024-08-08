@@ -398,3 +398,41 @@ export interface IDayExercisePlan {
   day: string;
   exercises?: IExercise[];
 }
+
+export const members = [
+  {
+    id: "66af479c34815a0061bf8ab9",
+    name: "John Doe1",
+  },
+  {
+    id: 2,
+    name: "John Doe2",
+  },
+  {
+    id: 3,
+    name: "John Doe3",
+  },
+  {
+    id: 4,
+    name: "John Doe4",
+  },
+];
+
+export const trainer = [
+  {
+    id: "66af479c34815a0061bf8ab9",
+    name: "Trainer 1",
+  },
+  {
+    id: 2,
+    name: "Trainer 2",
+  },
+  {
+    id: 3,
+    name: "Trainer 3",
+  },
+  {
+    id: 4,
+    name: "Trainer 4",
+  },
+];
