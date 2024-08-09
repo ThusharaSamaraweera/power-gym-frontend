@@ -11,6 +11,7 @@ import { useParams } from "react-router-dom";
 import { useAppSelector } from "../state/hooks";
 import BodyHealthInfo from "../components/organisms/BodyHealthInfo";
 import { IRequestedPlan } from "../models";
+import { generateAIExercisePlan } from "../services/trainer.service";
 
 const initialPlan: IDayExercisePlan[] = [
   {
@@ -46,7 +47,7 @@ const initialPlan: IDayExercisePlan[] = [
 const ExercisePlanDiagram = () => {
   const { planId } = useParams();
   const requestedPlans = useAppSelector((state) => state.global.requestedPlans);
-  const [requestedPlan, setRequestedPlan] = React.useState <IRequestedPlan>({});
+  const [requestedPlan, setRequestedPlan] = React.useState<IRequestedPlan>({});
   const [plan, setPlan] = React.useState(initialPlan);
 
   console.log("🚀 ~ file: ExercisePlanDiagram.tsx:45 ~ ExercisePlanDiagram ~ planId:", planId);
@@ -54,7 +55,7 @@ const ExercisePlanDiagram = () => {
   useEffect(() => {
     if (planId) {
       const requestedPlan = requestedPlans?.find((item) => item._id === planId);
-      if(requestedPlan) {
+      if (requestedPlan) {
         setRequestedPlan(requestedPlan);
         if (requestedPlan?.WorkoutPlan) {
           setPlan(requestedPlan?.WorkoutPlan);
@@ -154,6 +155,11 @@ const ExercisePlanDiagram = () => {
     ));
   };
 
+  const handleGeneratePlan = () => {
+    const res = generateAIExercisePlan(requestedPlan?.trainerId, requestedPlan?._id);
+    console.log("🚀 ~ file: ExercisePlanDiagram.tsx:160 ~ handleGeneratePlan ~ res:", res)
+  }
+
   return (
     <div className='page w-100 h-screen'>
       <Card x-chunk='dashboard-06-chunk-0' className='h-5/6'>
@@ -167,7 +173,13 @@ const ExercisePlanDiagram = () => {
           <CardDescription></CardDescription>
         </CardHeader>
         <CardContent className='h-full flex'>
-          <div className='w-1/2'>
+          <div className='w-1/2 pr-4'>
+            <div className='flex mb-5'>
+              <div>Generate the plan from AI</div>
+              <Button className='ml-auto' variant='default' size='sm' onClick={handleGeneratePlan}>
+                Generate The Plan
+              </Button>
+            </div>
             <ScrollArea className='h-5/6 w-100 rounded-md px-2'>
               {plan?.map((item) => {
                 return (
@@ -195,7 +207,7 @@ const ExercisePlanDiagram = () => {
               })}
             </ScrollArea>
           </div>
-          <div className="w-1/2">
+          <div className='w-1/2'>
             <BodyHealthInfo info={requestedPlan?.bodyHealthInfo}></BodyHealthInfo>
           </div>
         </CardContent>

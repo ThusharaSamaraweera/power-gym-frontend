@@ -96,5 +96,6 @@ export interface IRequestedPlan extends BodyHealthInfoPayload {
   status: BODY_HEALTH_INFO_RECORD_STATUS;
   createdAt: string;
   updatedAt: string;
-  WorkoutPlan: any
+  WorkoutPlan: any;
+  trainerId: string
 }
