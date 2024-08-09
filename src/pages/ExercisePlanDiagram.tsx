@@ -2,15 +2,14 @@ import React, { useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../components/ui/card";
 import { ScrollArea } from "../components/ui/scroll-area";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../components/ui/accordion";
-import { STRENGTH_EXERCISES } from "../constant";
 import AntdSelect from "../components/ui/AntdSelect";
 import { Input } from "../components/ui/input";
 import { Button } from "../components/ui/button";
-import { IDayExercisePlan, IExercise, PLAN, REQUESTED_PLANS_DATA } from "../assets/data";
+import { PLAN } from "../assets/data";
 import { useParams } from "react-router-dom";
 import { useAppSelector } from "../state/hooks";
 import BodyHealthInfo from "../components/organisms/BodyHealthInfo";
-import { IRequestedPlan } from "../models";
+import { CARDIO_EXERCISES, IDayExercisePlan, IExercise, IRequestedPlan, STRENGTH_EXERCISES } from "../models";
 import { generateAIExercisePlan } from "../services/trainer.service";
 
 const initialPlan: IDayExercisePlan[] = [
@@ -53,12 +52,13 @@ const ExercisePlanDiagram = () => {
   console.log("🚀 ~ file: ExercisePlanDiagram.tsx:45 ~ ExercisePlanDiagram ~ planId:", planId);
 
   useEffect(() => {
+    setPlan(PLAN);
     if (planId) {
       const requestedPlan = requestedPlans?.find((item) => item._id === planId);
       if (requestedPlan) {
         setRequestedPlan(requestedPlan);
         if (requestedPlan?.WorkoutPlan) {
-          setPlan(requestedPlan?.WorkoutPlan);
+          // setPlan(requestedPlan?.WorkoutPlan);
         }
       }
     }
@@ -68,7 +68,7 @@ const ExercisePlanDiagram = () => {
     const newPlan = plan?.map((item) => {
       if (item?.day === day) {
         if (!item?.exercises) item.exercises = [];
-        item?.exercises.push({ exerciseName: "", frequency: { sets: 1, reps: 1 } });
+        item?.exercises.push({ exercise: "", frequency: { sets: 1, reps: 1, duration: 0 } });
       }
       return item;
     });
@@ -78,7 +78,7 @@ const ExercisePlanDiagram = () => {
   const selectExercise = (value: string, index: number, day: string) => {
     const newPlan = plan?.map((item) => {
       if (item?.day === day && item?.exercises) {
-        item.exercises[index].exerciseName = value;
+        item.exercises[index].exercise = value;
       }
       return item;
     });
@@ -114,51 +114,82 @@ const ExercisePlanDiagram = () => {
     });
     setPlan(newPlan);
   };
+  
+  const handleOnChangeDuration = (value: string, index: number, day: string) => {
+    const newPlan = plan?.map((item) => {
+      if (item?.day === day && item?.exercises && item?.exercises?.length > 0) {
+        item.exercises[index].frequency.duration = parseInt(value);
+      }
+      return item;
+    });
+    setPlan(newPlan);
+  };
+
 
   const handleOnSave = () => {
     console.log("plan", plan);
   };
 
   const listItems = (exercises: IExercise[] | undefined, day: string) => {
-    return exercises?.map((item, i) => (
-      <div key={i} className='flex flex-row my-2 px-4 py-2 justify-around items-center border-gray-600 border-2 border-solid'>
-        <AntdSelect
-          key={i}
-          options={STRENGTH_EXERCISES.map((exercise) => {
-            return { value: exercise, label: exercise };
-          })}
-          value={item?.exerciseName}
-          onChange={(value) => selectExercise(value, i, day)}
-        />
-        <div className='flex flex-row items-center gap-4'>
-          <label>Sets</label>
-          <Input
-            type='number'
-            className='py-1 h-8 w-16'
-            value={item?.frequency?.sets}
-            onChange={(event) => handleOnChangeSet(event?.target.value, i, day)}
+    return exercises?.map((item, i) => {
+      const isCarDioExercise = CARDIO_EXERCISES.includes(item?.exercise);
+      console.log(item?.frequency?.duration);
+      return (
+        <div key={i} className='grid grid-cols-3 my-2 px-4 py-2 gap-28 items-center border-gray-600 border-2 border-solid'>
+          <AntdSelect
+            key={i}
+            options={STRENGTH_EXERCISES.map((exercise) => {
+              return { value: exercise, label: exercise };
+            })}
+            value={item?.exercise}
+            onChange={(value) => selectExercise(value, i, day)}
           />
+          {isCarDioExercise ? (
+            <div className='flex flex-row items-center gap-4'>
+              <label>Duration</label>
+              <Input
+                type='number'
+                className='py-1 h-8 w-16'
+                value={item?.frequency?.duration}
+                onChange={(event) => handleOnChangeDuration(event?.target.value, i, day)}
+                min={1}
+              />
+              <label>min</label>
+            </div>
+          ) : (
+            <div className='flex'>
+              <div className='flex flex-row items-center gap-4'>
+                <label>Sets</label>
+                <Input
+                  type='number'
+                  className='py-1 h-8 w-16'
+                  value={item?.frequency?.sets}
+                  onChange={(event) => handleOnChangeSet(event?.target.value, i, day)}
+                />
+              </div>
+              <div className='flex flex-row items-center gap-4'>
+                <label>Reps</label>
+                <Input
+                  type='number'
+                  className='py-1 h-8 w-16'
+                  value={item?.frequency?.reps}
+                  onChange={(event) => handleOnChangeReps(event?.target.value, i, day)}
+                />
+              </div>
+            </div>
+          )}
+          <div id={i.toString()} className='delButton' onClick={() => handleDelete(i, day)}>
+            X
+          </div>
         </div>
-        <div className='flex flex-row items-center gap-4'>
-          <label>Reps</label>
-          <Input
-            type='number'
-            className='py-1 h-8 w-16'
-            value={item?.frequency?.reps}
-            onChange={(event) => handleOnChangeReps(event?.target.value, i, day)}
-          />
-        </div>
-        <div id={i.toString()} className='delButton' onClick={() => handleDelete(i, day)}>
-          X
-        </div>
-      </div>
-    ));
+      );
+    });
   };
 
-  const handleGeneratePlan = () => {
-    const res = generateAIExercisePlan(requestedPlan?.trainerId, requestedPlan?._id);
-    console.log("🚀 ~ file: ExercisePlanDiagram.tsx:160 ~ handleGeneratePlan ~ res:", res)
-  }
+  const handleGeneratePlan = async () => {
+    const res = await generateAIExercisePlan(requestedPlan?.trainerId, requestedPlan?._id);
+    console.log("🚀 ~ file: ExercisePlanDiagram.tsx:160 ~ handleGeneratePlan ~ res:", res);
+  };
 
   return (
     <div className='page w-100 h-screen'>
@@ -173,7 +204,7 @@ const ExercisePlanDiagram = () => {
           <CardDescription></CardDescription>
         </CardHeader>
         <CardContent className='h-full flex'>
-          <div className='w-1/2 pr-4'>
+          <div className='w-3/5'>
             <div className='flex mb-5'>
               <div>Generate the plan from AI</div>
               <Button className='ml-auto' variant='default' size='sm' onClick={handleGeneratePlan}>
@@ -207,7 +238,7 @@ const ExercisePlanDiagram = () => {
               })}
             </ScrollArea>
           </div>
-          <div className='w-1/2'>
+          <div className='pl-4 w-2/5'>
             <BodyHealthInfo info={requestedPlan?.bodyHealthInfo}></BodyHealthInfo>
           </div>
         </CardContent>
