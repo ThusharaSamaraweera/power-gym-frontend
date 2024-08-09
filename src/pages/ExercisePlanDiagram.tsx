@@ -9,6 +9,8 @@ import { Button } from "../components/ui/button";
 import { IDayExercisePlan, IExercise, PLAN, REQUESTED_PLANS_DATA } from "../assets/data";
 import { useParams } from "react-router-dom";
 import { useAppSelector } from "../state/hooks";
+import BodyHealthInfo from "../components/organisms/BodyHealthInfo";
+import { IRequestedPlan } from "../models";
 
 const initialPlan: IDayExercisePlan[] = [
   {
@@ -44,6 +46,7 @@ const initialPlan: IDayExercisePlan[] = [
 const ExercisePlanDiagram = () => {
   const { planId } = useParams();
   const requestedPlans = useAppSelector((state) => state.global.requestedPlans);
+  const [requestedPlan, setRequestedPlan] = React.useState <IRequestedPlan>({});
   const [plan, setPlan] = React.useState(initialPlan);
 
   console.log("🚀 ~ file: ExercisePlanDiagram.tsx:45 ~ ExercisePlanDiagram ~ planId:", planId);
@@ -51,8 +54,11 @@ const ExercisePlanDiagram = () => {
   useEffect(() => {
     if (planId) {
       const requestedPlan = requestedPlans?.find((item) => item._id === planId);
-      if (requestedPlan?.WorkoutPlan) {
-        setPlan(requestedPlan?.WorkoutPlan);
+      if(requestedPlan) {
+        setRequestedPlan(requestedPlan);
+        if (requestedPlan?.WorkoutPlan) {
+          setPlan(requestedPlan?.WorkoutPlan);
+        }
       }
     }
   }, [planId, requestedPlans]);
@@ -160,29 +166,38 @@ const ExercisePlanDiagram = () => {
           </div>
           <CardDescription></CardDescription>
         </CardHeader>
-        <CardContent className='h-full w-1/2'>
-          <ScrollArea className='h-5/6 w-100 rounded-md px-2'>
-            {plan?.map((item) => {
-              return (
-                <Accordion type='multiple' className='w-full border-gray-300 p-2 border-solid'>
-                  <AccordionItem value={item?.day} className='border-gray-400'>
-                    <AccordionTrigger>{item?.day}</AccordionTrigger>
-                    <AccordionContent>
-                      {/* <ScrollArea className='h-fit w-100 rounded-md'> */}
-                      <div className=' w-full px-4 gap-3'>
-                        {listItems(item?.exercises, item?.day)}
+        <CardContent className='h-full flex'>
+          <div className='w-1/2'>
+            <ScrollArea className='h-5/6 w-100 rounded-md px-2'>
+              {plan?.map((item) => {
+                return (
+                  <Accordion type='multiple' className='w-full border-gray-300 p-2 border-solid'>
+                    <AccordionItem value={item?.day} className='border-gray-400'>
+                      <AccordionTrigger>{item?.day}</AccordionTrigger>
+                      <AccordionContent>
+                        {/* <ScrollArea className='h-fit w-100 rounded-md'> */}
+                        <div className=' w-full px-4 gap-3'>
+                          {listItems(item?.exercises, item?.day)}
 
-                        <Button className='flex items-center mt-2 mx-auto' variant='default' size='sm' onClick={() => addNewEmptyExercise(item?.day)}>
-                          Add
-                        </Button>
-                      </div>
-                      {/* </ScrollArea> */}
-                    </AccordionContent>
-                  </AccordionItem>
-                </Accordion>
-              );
-            })}
-          </ScrollArea>
+                          <Button
+                            className='flex items-center mt-2 mx-auto'
+                            variant='default'
+                            size='sm'
+                            onClick={() => addNewEmptyExercise(item?.day)}>
+                            Add
+                          </Button>
+                        </div>
+                        {/* </ScrollArea> */}
+                      </AccordionContent>
+                    </AccordionItem>
+                  </Accordion>
+                );
+              })}
+            </ScrollArea>
+          </div>
+          <div className="w-1/2">
+            <BodyHealthInfo info={requestedPlan?.bodyHealthInfo}></BodyHealthInfo>
+          </div>
         </CardContent>
       </Card>
     </div>
