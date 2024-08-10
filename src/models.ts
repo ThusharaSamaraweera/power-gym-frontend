@@ -84,25 +84,24 @@ export interface BodyHealthInfoPayload {
   verifiedBy: string;
 }
 
-
 export enum BODY_HEALTH_INFO_RECORD_STATUS {
   PENDING = "PENDING",
   COMPLETED = "COMPLETED",
 }
 
-export interface IRequestedPlan extends BodyHealthInfoPayload {
+export interface IBodyHealthInfo extends BodyHealthInfoPayload {
   _id: string;
-  memberId: string;
+  memberId: IUser;
   status: BODY_HEALTH_INFO_RECORD_STATUS;
   createdAt: string;
   updatedAt: string;
   WorkoutPlan?: IWorkoutPlan;
-  trainerId: string
+  trainerId: string;
 }
 
 export interface IWorkoutPlan {
   duration: number;
-  plan: IDayExercisePlan[]
+  plan: IDayExercisePlan[];
 }
 
 export interface IExercise {
@@ -179,4 +178,11 @@ export const STRENGTH_EXERCISES = [
   "Stair Climber",
 ];
 
-export const CARDIO_EXERCISES = ["Running (Treadmill)", "Cycling (Stationary Bike)", "Rowing Machine", "Jump Rope", "Elliptical Trainer", "Stair Climber"];
+export const CARDIO_EXERCISES = [
+  "Running (Treadmill)",
+  "Cycling (Stationary Bike)",
+  "Rowing Machine",
+  "Jump Rope",
+  "Elliptical Trainer",
+  "Stair Climber",
+];
