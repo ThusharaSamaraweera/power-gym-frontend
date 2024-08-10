@@ -5,6 +5,7 @@ export interface IUser extends SignupUser {
   image?: string;
   phone?: string;
   status: UserStatus;
+  trainerId?: string;
 }
 
 export interface SignupUser {
@@ -117,6 +118,12 @@ export interface IDayExercisePlan {
   day: string;
   isRest?: boolean;
   exercises?: IExercise[];
+}
+
+interface IUserWithoutTrainer extends Omit<IUser, "trainerId"> {}
+export interface IUserWithBodyHealthInfo extends IUserWithoutTrainer {
+  trainerId: IUser;
+  bodyHealthInfo: IBodyHealthInfo;
 }
 
 export const STRENGTH_EXERCISES = [
