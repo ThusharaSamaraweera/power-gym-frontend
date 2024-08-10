@@ -1,10 +1,12 @@
 import React, { useEffect } from "react";
-import { useAppSelector } from "../state/hooks";
+import { useAppDispatch, useAppSelector } from "../state/hooks";
 import userService from "../services/user.service";
 import { UserRoles } from "../models";
 import { Table, Tag } from "antd";
 import Column from "antd/es/table/Column";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../components/ui/card";
+import { setAllUsers } from "../state/global/globalSlice";
+import { useNavigate } from "react-router-dom";
 
 interface IUserRow {
   key: string;
@@ -16,6 +18,8 @@ interface IUserRow {
 
 const AllUsers = () => {
   const user = useAppSelector((state) => state.global.user);
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate()
   const [userList, setUserList] = React.useState<IUserRow[]>([]);
 
   useEffect(() => {
@@ -34,10 +38,15 @@ const AllUsers = () => {
           userType: user.role,
         }))
       );
+      dispatch(setAllUsers(res));
     }
 
     getUsers();
   }, [user]);
+
+  const handleOnClickRow = (record: IUserRow) => {
+    navigate('/all-users/' + record.key)
+  };
 
   return (
     <div>
@@ -47,7 +56,13 @@ const AllUsers = () => {
           <CardDescription></CardDescription>
         </CardHeader>
         <CardContent>
-          <Table dataSource={userList}>
+          <Table
+            dataSource={userList}
+            onRow={(record) => {
+              return {
+                onClick: () => handleOnClickRow(record),
+              };
+            }}>
             <Column title='Name' dataIndex='name' key='name' />
             <Column title='Phone' dataIndex='phone' key='phone' />
             <Column title='Phone' dataIndex='phone' key='phone' />
