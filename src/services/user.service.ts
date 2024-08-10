@@ -1,4 +1,4 @@
-import { BodyHealthInfoDto, BodyHealthInfoPayload, SignupUser } from "../models";
+import { BODY_HEALTH_INFO_RECORD_STATUS, BodyHealthInfoPayload, SignupUser } from "../models";
 import { HTTPS_METHODS, restClient } from "../utils/restClient";
 
 const signUp = async (payload: SignupUser) => {
@@ -18,8 +18,16 @@ const createBodyHealthInfo = async (memberId: string, payload: BodyHealthInfoPay
   return res;
 };
 
+const getExercisePlansByUserId = async (memberId: string) => {
+  const url = `/users/${memberId}/body-health-info`;
+
+  const res = await restClient(HTTPS_METHODS.GET, url, undefined, undefined, { status: BODY_HEALTH_INFO_RECORD_STATUS.COMPLETED });
+  return res?.data
+}
+
 export default {
   signUp,
   getUserByClerkId,
   createBodyHealthInfo,
+  getExercisePlansByUserId
 };

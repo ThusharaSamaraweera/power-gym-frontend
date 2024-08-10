@@ -6,20 +6,20 @@ import { useEffect, useState } from "react";
 import * as trainerService from "../services/trainer.service";
 import { useAppDispatch, useAppSelector } from "../state/hooks";
 import { setRequestedPlans } from "../state/global/globalSlice";
-import { IRequestedPlan } from "../models";
+import { IBodyHealthInfo } from "../models";
 
 const RequestedPlansTable = () => {
   const navigate = useNavigate();
   const user = useAppSelector((state) => state.global.user);
-  const dispatch = useAppDispatch()
-  const [requestedPlanList, setRequestedPlanList] = useState <IRequestedPlan[]>([]);
+  const dispatch = useAppDispatch();
+  const [requestedPlanList, setRequestedPlanList] = useState<IBodyHealthInfo[]>([]);
 
   useEffect(() => {
     async function fetchData() {
       if (!user) return;
 
       const res = await trainerService.getExercisePlanRequests(user?._id);
-      dispatch(setRequestedPlans(res))
+      dispatch(setRequestedPlans(res));
       setRequestedPlanList(res);
       console.log("🚀 ~ file: RequestedPlansTable.tsx:19 ~ fetchData ~ res:", res);
     }
@@ -53,7 +53,7 @@ const RequestedPlansTable = () => {
               {requestedPlanList?.map((plan, i) => (
                 <TableRow key={i} className='cursor-pointer' onClick={() => handleOnClickRow(plan?._id)}>
                   <TableCell className='hidden sm:table-cell'></TableCell>
-                  <TableCell className='font-medium'>{plan?.memberId}</TableCell>
+                  <TableCell className='font-medium'>{plan?.memberId?.name}</TableCell>
                   <TableCell className='hidden md:table-cell'>{plan?.createdAt}</TableCell>
                 </TableRow>
               ))}

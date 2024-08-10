@@ -1,14 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { IRequestedPlan, IUser } from "../../models";
+import { IBodyHealthInfo, IUser } from "../../models";
 
 interface IGlobalState {
   user: IUser | null;
-  requestedPlans: IRequestedPlan[] | null;
+  requestedPlans: IBodyHealthInfo[] | null;
 }
 
 const initialState = {
   user: null,
-  requestedPlans: null
+  requestedPlans: null,
 } satisfies IGlobalState as IGlobalState;
 
 const globalSlice = createSlice({
@@ -20,7 +20,7 @@ const globalSlice = createSlice({
     },
     setRequestedPlans: (state, action) => {
       state.requestedPlans = action.payload;
-    }
+    },
   },
 });
 

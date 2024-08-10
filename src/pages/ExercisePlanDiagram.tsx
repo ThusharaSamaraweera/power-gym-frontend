@@ -9,7 +9,7 @@ import { PLAN } from "../assets/data";
 import { useParams } from "react-router-dom";
 import { useAppSelector } from "../state/hooks";
 import BodyHealthInfo from "../components/organisms/BodyHealthInfo";
-import { CARDIO_EXERCISES, IDayExercisePlan, IExercise, IRequestedPlan, IWorkoutPlan, STRENGTH_EXERCISES } from "../models";
+import { CARDIO_EXERCISES, IDayExercisePlan, IExercise, IBodyHealthInfo, IWorkoutPlan, STRENGTH_EXERCISES } from "../models";
 import { generateAIExercisePlan, submitPlan } from "../services/trainer.service";
 
 const initialPlan: IDayExercisePlan[] = [
@@ -46,7 +46,7 @@ const initialPlan: IDayExercisePlan[] = [
 const ExercisePlanDiagram = () => {
   const { planId } = useParams();
   const requestedPlans = useAppSelector((state) => state.global.requestedPlans);
-  const [requestedPlan, setRequestedPlan] = React.useState<IRequestedPlan>({});
+  const [requestedPlan, setRequestedPlan] = React.useState<IBodyHealthInfo>({});
   const [plan, setPlan] = React.useState(initialPlan);
   const [planDuration, setPlanDuration] = React.useState(0);
 
@@ -115,7 +115,7 @@ const ExercisePlanDiagram = () => {
     });
     setPlan(newPlan);
   };
-  
+
   const handleOnChangeDuration = (value: string, index: number, day: string) => {
     const newPlan = plan?.map((item) => {
       if (item?.day === day && item?.exercises && item?.exercises?.length > 0) {
@@ -126,13 +126,12 @@ const ExercisePlanDiagram = () => {
     setPlan(newPlan);
   };
 
-
   const handleOnSave = async () => {
     try {
       const workoutPlan: IWorkoutPlan = { plan: plan, duration: planDuration };
       const res = await submitPlan(requestedPlan?.trainerId, requestedPlan?._id, workoutPlan);
     } catch (error) {
-      console.error(error)
+      console.error(error);
     }
   };
 
@@ -194,10 +193,9 @@ const ExercisePlanDiagram = () => {
   const handleGeneratePlan = async () => {
     const res = await generateAIExercisePlan(requestedPlan?.trainerId, requestedPlan?._id);
     console.log("🚀 ~ file: ExercisePlanDiagram.tsx:160 ~ handleGeneratePlan ~ res:", res);
-    setPlan(res?.plan)
-    setPlanDuration(res?.duration)
+    setPlan(res?.plan);
+    setPlanDuration(res?.duration);
   };
-
 
   return (
     <div className='page w-100 h-screen'>
