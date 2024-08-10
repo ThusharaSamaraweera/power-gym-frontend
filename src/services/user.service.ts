@@ -1,4 +1,4 @@
-import { BODY_HEALTH_INFO_RECORD_STATUS, BodyHealthInfoPayload, SignupUser } from "../models";
+import { BODY_HEALTH_INFO_RECORD_STATUS, BodyHealthInfoPayload, IUser, SignupUser, UserRoles } from "../models";
 import { HTTPS_METHODS, restClient } from "../utils/restClient";
 
 const signUp = async (payload: SignupUser) => {
@@ -25,9 +25,17 @@ const getExercisePlansByUserId = async (memberId: string) => {
   return res?.data
 }
 
+const getUsers = async (roles: UserRoles[]): Promise<IUser[]> => {
+  const rolesString = roles.join(",");
+  const res = await restClient(HTTPS_METHODS.GET, "/users", undefined, undefined, { userRoles: rolesString });
+  return res?.data;
+
+}
+
 export default {
   signUp,
   getUserByClerkId,
   createBodyHealthInfo,
-  getExercisePlansByUserId
+  getExercisePlansByUserId,
+  getUsers
 };

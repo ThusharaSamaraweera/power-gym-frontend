@@ -1,4 +1,3 @@
-import { members, trainer } from "../assets/data";
 import AntdSelect from "../components/ui/AntdSelect";
 import { Button } from "../components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../components/ui/card";
@@ -7,7 +6,7 @@ import { Label } from "../components/ui/label";
 import { ScrollArea } from "../components/ui/scroll-area";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../components/ui/select";
 import { useState, useEffect } from "react";
-import { BodyHealthInfoDto, BodyHealthInfoPayload } from "../models";
+import { BodyHealthInfoDto, BodyHealthInfoPayload, IUser, UserRoles } from "../models";
 import userService from "../services/user.service";
 
 const ExercisePlanForm = () => {
@@ -46,6 +45,18 @@ const ExercisePlanForm = () => {
   const [waistToHipRadio, setWaistToHipRadio] = useState("");
   const [memberId, setMemberId] = useState("");
   const [verifiedBy, setVerifiedBy] = useState("");
+  const [memberUsers, setMemberUsers] = useState<IUser[]>([]);
+  const [verifiedByUsers, setVerifiedByUsers] = useState<IUser[]>([]);
+
+  useEffect(() => {
+    async function getUsers() {
+      const res = await userService.getUsers([UserRoles.ADMIN, UserRoles.MEMBER, UserRoles.TRAINER]);
+      setMemberUsers(res.filter((user) => user.role === UserRoles.MEMBER));
+      setVerifiedByUsers(res.filter((user) => user.role === UserRoles.ADMIN || user?.role === UserRoles.TRAINER));
+    }
+
+    getUsers();
+  }, [])
 
   useEffect(() => {
     calculateDerivedValues();
@@ -155,24 +166,24 @@ const ExercisePlanForm = () => {
         <CardContent className='w-full h-full'>
           <ScrollArea className='w-100 h-5/6 rounded-md px-2'>
             <form onSubmit={handleSubmit} className='px-2 gap-4'>
-              <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4  w-full items-center gap-4'>
-                <div className='flex gap-2 items-center space-y-1.5 w-fit'>
+              <div className='grid grid-cols-2  w-full items-center gap-4'>
+                <div className='flex gap-5 items-center space-y-1.5 w-full'>
                   <Label htmlFor='gender'>Select member</Label>
                   <AntdSelect
                     id='memberId'
-                    options={members.map((member) => {
-                      return { value: member?.id?.toString(), label: member?.name };
+                    options={memberUsers.map((member) => {
+                      return { value: member?._id?.toString(), label: member?.name };
                     })}
                     value={memberId}
                     onChange={(value) => setMemberId(value)}
                   />
                 </div>
-                <div className='flex gap-2 items-center space-y-1.5 w-fit'>
+                <div className='flex gap-5 items-center space-y-1.5 w-full'>
                   <Label htmlFor='gender'>Verified by</Label>
                   <AntdSelect
                     id='verifiedBy'
-                    options={trainer.map((trainer) => {
-                      return { value: trainer?.id?.toString(), label: trainer?.name };
+                    options={verifiedByUsers?.map((user) => {
+                      return { value: user?._id?.toString(), label: user?.name };
                     })}
                     value={verifiedBy}
                     onChange={(value) => setVerifiedBy(value)}
