@@ -101,7 +101,7 @@ export interface IRequestedPlan extends BodyHealthInfoPayload {
 }
 
 export interface IWorkoutPlan {
-  duration: string;
+  duration: number;
   plan: IDayExercisePlan[]
 }
 

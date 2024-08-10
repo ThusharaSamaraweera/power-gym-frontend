@@ -9,8 +9,8 @@ import { PLAN } from "../assets/data";
 import { useParams } from "react-router-dom";
 import { useAppSelector } from "../state/hooks";
 import BodyHealthInfo from "../components/organisms/BodyHealthInfo";
-import { CARDIO_EXERCISES, IDayExercisePlan, IExercise, IRequestedPlan, STRENGTH_EXERCISES } from "../models";
-import { generateAIExercisePlan } from "../services/trainer.service";
+import { CARDIO_EXERCISES, IDayExercisePlan, IExercise, IRequestedPlan, IWorkoutPlan, STRENGTH_EXERCISES } from "../models";
+import { generateAIExercisePlan, submitPlan } from "../services/trainer.service";
 
 const initialPlan: IDayExercisePlan[] = [
   {
@@ -48,17 +48,18 @@ const ExercisePlanDiagram = () => {
   const requestedPlans = useAppSelector((state) => state.global.requestedPlans);
   const [requestedPlan, setRequestedPlan] = React.useState<IRequestedPlan>({});
   const [plan, setPlan] = React.useState(initialPlan);
+  const [planDuration, setPlanDuration] = React.useState(0);
 
   console.log("🚀 ~ file: ExercisePlanDiagram.tsx:45 ~ ExercisePlanDiagram ~ planId:", planId);
 
   useEffect(() => {
-    setPlan(PLAN);
+    // setPlan(PLAN);
     if (planId) {
       const requestedPlan = requestedPlans?.find((item) => item._id === planId);
       if (requestedPlan) {
         setRequestedPlan(requestedPlan);
         if (requestedPlan?.WorkoutPlan) {
-          // setPlan(requestedPlan?.WorkoutPlan);
+          setPlan(requestedPlan?.WorkoutPlan?.plan);
         }
       }
     }
@@ -126,14 +127,18 @@ const ExercisePlanDiagram = () => {
   };
 
 
-  const handleOnSave = () => {
-    console.log("plan", plan);
+  const handleOnSave = async () => {
+    try {
+      const workoutPlan: IWorkoutPlan = { plan: plan, duration: planDuration };
+      const res = await submitPlan(requestedPlan?.trainerId, requestedPlan?._id, workoutPlan);
+    } catch (error) {
+      console.error(error)
+    }
   };
 
   const listItems = (exercises: IExercise[] | undefined, day: string) => {
     return exercises?.map((item, i) => {
       const isCarDioExercise = CARDIO_EXERCISES.includes(item?.exercise);
-      console.log(item?.frequency?.duration);
       return (
         <div key={i} className='grid grid-cols-3 my-2 px-4 py-2 gap-28 items-center border-gray-600 border-2 border-solid'>
           <AntdSelect
@@ -189,7 +194,10 @@ const ExercisePlanDiagram = () => {
   const handleGeneratePlan = async () => {
     const res = await generateAIExercisePlan(requestedPlan?.trainerId, requestedPlan?._id);
     console.log("🚀 ~ file: ExercisePlanDiagram.tsx:160 ~ handleGeneratePlan ~ res:", res);
+    setPlan(res?.plan)
+    setPlanDuration(res?.duration)
   };
+
 
   return (
     <div className='page w-100 h-screen'>
@@ -210,6 +218,16 @@ const ExercisePlanDiagram = () => {
               <Button className='ml-auto' variant='default' size='sm' onClick={handleGeneratePlan}>
                 Generate The Plan
               </Button>
+            </div>
+            <div className='flex mb-5 gap-3'>
+              <div>Exercise plan duration</div>
+              <Input
+                type='number'
+                className='py-1 h-8 w-16'
+                value={planDuration}
+                onChange={(event) => setPlanDuration(event?.target?.value ? parseInt(event?.target?.value) : 0)}
+              />
+              days
             </div>
             <ScrollArea className='h-5/6 w-100 rounded-md px-2'>
               {plan?.map((item) => {
