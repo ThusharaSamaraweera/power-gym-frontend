@@ -11,6 +11,7 @@ interface ProgressRecordTableProps {
 interface DataType {
   key: React.Key;
   createdDate: string;
+  record: IProgressRecord;
 }
 
 const columns :TableColumnsType<DataType> = [
@@ -24,6 +25,7 @@ const ProgressRecordTable: React.FC<ProgressRecordTableProps> = ({records}) => {
     const data = records?.map((record, index) => ({
         key: index,
         createdDate: moment(record.createdAt).format('LL') ,
+        record: record
     }));
     console.log("🚀 ~ file: ProgressRecordTable.tsx:26 ~ data ~ data:", data)
 
@@ -32,7 +34,7 @@ const ProgressRecordTable: React.FC<ProgressRecordTableProps> = ({records}) => {
       <Table
         columns={columns}
         expandable={{
-          expandedRowRender: (record) => <ProgressRecordItem />,
+          expandedRowRender: (record) => <ProgressRecordItem record={record?.record} />,
         }}
         dataSource={data}
       />
