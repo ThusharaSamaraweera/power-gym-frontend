@@ -123,7 +123,8 @@ export interface IDayExercisePlan {
 interface IUserWithoutTrainer extends Omit<IUser, "trainerId"> {}
 export interface IUserWithBodyHealthInfo extends IUserWithoutTrainer {
   trainerId: IUser;
-  bodyHealthInfo: IBodyHealthInfo;
+  bodyHealthInfo: IBodyHealthInfo[];
+  progressRecords: IProgressRecord[]
 }
 
 export const STRENGTH_EXERCISES = [
