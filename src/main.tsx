@@ -16,6 +16,7 @@ import AllExercisePlans from "./pages/AllExercisePlans.tsx";
 import { Provider as ReduxProvider } from "react-redux";
 import store from "./state/store.ts";
 import UserPage from "./pages/UserPage.tsx";
+import ProgressRecordsPage from "./pages/ProgressRecordsPage.tsx";
 
 // Import your publishable key
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
@@ -47,9 +48,9 @@ const router = createBrowserRouter([
           },
           {
             path: ":userId",
-            element: <UserPage />
-          }
-        ]
+            element: <UserPage />,
+          },
+        ],
       },
       {
         path: "/exercise-plans",
@@ -76,6 +77,16 @@ const router = createBrowserRouter([
           {
             path: ":planId",
             element: <ExercisePlanDiagram />,
+          },
+        ],
+      },
+      {
+        path: "/progress-records",
+        children: [
+          {
+            path: "",
+            index: true,
+            element: <ProgressRecordsPage />,
           },
         ],
       },

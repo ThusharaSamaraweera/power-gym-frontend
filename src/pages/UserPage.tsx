@@ -42,7 +42,7 @@ const UserPage = () => {
             <Input value={user?.phone} disabled />
           </Form.Item>
           <Form.Item label='User type'>
-            <Input value={user?.role} />
+            <Input value={user?.role} disabled/>
           </Form.Item>
           <Form.Item label='Email'>
             <Input value={user?.email} disabled />

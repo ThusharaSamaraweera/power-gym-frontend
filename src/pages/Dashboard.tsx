@@ -1,4 +1,4 @@
-import { Home, Package2, User, NotepadText, Waypoints, ListTodo } from "lucide-react";
+import { Home, Package2, User, NotepadText, Waypoints, ListTodo, GanttChartIcon } from "lucide-react";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../components/ui/tooltip";
 import {
@@ -61,6 +61,8 @@ const Dashboard = () => {
     navigate("/profile");
   };
 
+
+
   return (
     <div className='flex min-h-screen w-full flex-col bg-muted/40'>
       <aside className='fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r bg-background sm:flex'>
@@ -83,7 +85,7 @@ const Dashboard = () => {
             <TooltipContent side='right'>Dashboard</TooltipContent>
           </Tooltip>
 
-          <ProtectedWrapper roles={[UserRoles.ADMIN]}>
+          <ProtectedWrapper roles={[UserRoles.ADMIN, UserRoles.TRAINER]}>
             <Tooltip>
               <TooltipTrigger asChild>
                 <Link
@@ -107,6 +109,18 @@ const Dashboard = () => {
               </Link>
             </TooltipTrigger>
             <TooltipContent side='right'>Exercise Plan</TooltipContent>
+          </Tooltip>
+
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Link
+                to={"/progress-records"}
+                className='flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8'>
+                <GanttChartIcon className='h-5 w-5' />
+                <span className='sr-only'>Progress Record</span>
+              </Link>
+            </TooltipTrigger>
+            <TooltipContent side='right'>Progress Record</TooltipContent>
           </Tooltip>
 
           <Tooltip>
