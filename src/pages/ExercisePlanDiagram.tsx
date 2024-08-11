@@ -214,7 +214,7 @@ const ExercisePlanDiagram = () => {
             <div className='flex mb-5'>
               <div>Generate the plan from AI</div>
               <Button className='ml-auto' variant='default' size='sm' onClick={handleGeneratePlan}>
-                Generate The Plan
+                Generate
               </Button>
             </div>
             <div className='flex mb-5 gap-3'>

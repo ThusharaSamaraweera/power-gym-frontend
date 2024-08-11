@@ -31,7 +31,7 @@ const getUsers = async (roles: UserRoles[]): Promise<IUser[]> => {
   return res?.data;
 };
 
-const getUserWithBodyHealthInfo = async (trainerId: string | undefined): Promise<IUserWithBodyHealthInfo[]> => {
+const getUserWithBodyHealthInfo = async (trainerId: string | undefined = undefined): Promise<IUserWithBodyHealthInfo[]> => {
   const params: any = {};
 
   if (trainerId) {
