@@ -193,3 +193,29 @@ export const CARDIO_EXERCISES = [
   "Elliptical Trainer",
   "Stair Climber",
 ];
+
+export interface ProgressRecord {
+  anthropometricMeasurements: {
+    weight: string;
+    height: string;
+    waistCircumference: string;
+    hipCircumference: string;
+    chestCircumference: string;
+    armCircumference: string;
+    thighCircumference: string;
+    abdomenCircumference: string;
+    tricepsCircumference: string;
+    supraIliacCircumference: string;
+    waistToHipRatio: string;
+  };
+  bodyComposition: {
+    bodyMassIndex: string;
+    bodyDensity: string;
+    bodyFatPercentage: string;
+  };
+  cardiovascularFitness: {
+    maximumWeightLifted: string;
+    reps: string;
+    oneRepMax: string;
+  };
+} 
