@@ -1,4 +1,4 @@
-import { Home, Package2, User, NotepadText, Waypoints, ListTodo } from "lucide-react";
+import { Home, Package2, User, NotepadText, Waypoints, ListTodo, GanttChartIcon } from "lucide-react";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../components/ui/tooltip";
 import {
@@ -10,39 +10,58 @@ import {
   DropdownMenuTrigger,
 } from "../components/ui/dropdown-menu";
 import { Button } from "../components/ui/button";
-import { SignOutButton, useUser } from "@clerk/clerk-react";
+import { SignOutButton, useUser, useClerk } from "@clerk/clerk-react";
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../state/hooks";
 import userService from "../services/user.service";
 import { setUser } from "../state/global/globalSlice";
+import { UserRoles } from "../models";
+import ProtectedWrapper from "../components/wrappers/ProtectedWrapper";
 
 const Dashboard = () => {
   const navigate = useNavigate();
   const user = useUser();
   const userInState = useAppSelector((state) => state.global.user);
   const dispatch = useAppDispatch();
+  const { signOut } = useClerk();
 
   useEffect(() => {
+    console.log("🚀 ~ file: Dashboard.tsx:31 ~ getUser ~ user:", user);
     async function getUser() {
-      if (!user?.user?.id) throw new Error("User not found");
-      const u = await userService.getUserByClerkId(user?.user?.id);
-      if (u) {
-        console.log(u);
-        dispatch(setUser(u));
+      try {
+        if (!user?.user?.id) throw new Error("User not found");
+        const u = await userService.getUserByClerkId(user?.user?.id);
+        if (u) {
+          console.log(u);
+          dispatch(setUser(u));
+        } else {
+          signOut();
+          dispatch(setUser(null));
+          return navigate("/login");
+        }
+      } catch (error) {
+        console.error(error);
+        signOut();
+        dispatch(setUser(null));
+        return navigate("/login");
       }
     }
 
     if (!user?.isSignedIn && user?.isLoaded) {
-      dispatch(setUser(null))
+      dispatch(setUser(null));
+      signOut();
+
       return navigate("/login");
     } else if (user?.isSignedIn && user?.isLoaded && !userInState) {
       getUser();
     }
-  }, [user?.isSignedIn, userInState, user, dispatch, navigate]);
+  }, [user?.isSignedIn, dispatch, navigate]);
 
   const handleOnClickProfile = () => {
     navigate("/profile");
   };
+
+
 
   return (
     <div className='flex min-h-screen w-full flex-col bg-muted/40'>
@@ -66,17 +85,19 @@ const Dashboard = () => {
             <TooltipContent side='right'>Dashboard</TooltipContent>
           </Tooltip>
 
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Link
-                to={"/exercise-plan-form"}
-                className='flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8'>
-                <NotepadText className='h-5 w-5' />
-                <span className='sr-only'>Exercise Plan form</span>
-              </Link>
-            </TooltipTrigger>
-            <TooltipContent side='right'>Exercise Plan form</TooltipContent>
-          </Tooltip>
+          <ProtectedWrapper roles={[UserRoles.ADMIN, UserRoles.TRAINER]}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Link
+                  to={"/exercise-plan-form"}
+                  className='flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8'>
+                  <NotepadText className='h-5 w-5' />
+                  <span className='sr-only'>Exercise Plan form</span>
+                </Link>
+              </TooltipTrigger>
+              <TooltipContent side='right'>Exercise Plan form</TooltipContent>
+            </Tooltip>
+          </ProtectedWrapper>
 
           <Tooltip>
             <TooltipTrigger asChild>
@@ -88,6 +109,18 @@ const Dashboard = () => {
               </Link>
             </TooltipTrigger>
             <TooltipContent side='right'>Exercise Plan</TooltipContent>
+          </Tooltip>
+
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Link
+                to={"/progress-records"}
+                className='flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8'>
+                <GanttChartIcon className='h-5 w-5' />
+                <span className='sr-only'>Progress Record</span>
+              </Link>
+            </TooltipTrigger>
+            <TooltipContent side='right'>Progress Record</TooltipContent>
           </Tooltip>
 
           <Tooltip>

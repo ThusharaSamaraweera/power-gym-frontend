@@ -1,9 +1,31 @@
 import { useNavigate } from "react-router-dom";
 import ExercisePlan from "../components/molecules/ExercisePlan";
 import { Button } from "../components/ui/button";
+import { useAppSelector } from "../state/hooks";
+import { useEffect, useState } from "react";
+import { IBodyHealthInfo, IWorkoutPlan } from "../models";
+import userService from "../services/user.service";
 
 const ExercisePlans = () => {
+  const user = useAppSelector((state) => state.global.user);
   const navigate = useNavigate()
+  const [plans, setPlans] = useState<IBodyHealthInfo[]>([]);
+  const [currentPlan, setCurrentPlan] = useState<IBodyHealthInfo | null>(null);
+
+  useEffect(() => {
+    async function fetchData() {
+      if (!user) return;
+
+      const res = await userService.getExercisePlansByUserId(user?._id);
+      console.log("🚀 ~ file: ExercisePlans.tsx:19 ~ fetchData ~ res:", res)
+      console.log("🚀 ~ file: ExercisePlans.tsx:24 ~ fetchData ~ res:", res)
+      setPlans(res)
+      setCurrentPlan(res[0])
+    }
+
+    fetchData();
+  }, [])
+
 
   const navigateToAllPlans = () => {
     navigate('/exercise-plans/all')
@@ -12,9 +34,9 @@ const ExercisePlans = () => {
     <div className='px-10 w-full'>
       <div className='text-xl mb-6 flex w-full justify-between'>
         <div className='text-2xl font-semibold leading-none tracking-tight'>Current Exercise Plan</div>
-        <Button onClick={navigateToAllPlans}>All Plans</Button>
+        {/* <Button onClick={navigateToAllPlans}>All Plans</Button> */}
       </div>
-      <ExercisePlan />
+      <ExercisePlan currentPlan={currentPlan} />
     </div>
   );
 };

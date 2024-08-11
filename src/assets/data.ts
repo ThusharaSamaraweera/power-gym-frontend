@@ -1,3 +1,5 @@
+import { IDayExercisePlan } from "../models";
+
 export interface BodyHealthInfoDto {
   anthropometricMeasurements: {
     weight: number;
@@ -115,21 +117,21 @@ export const REQUESTED_PLANS_DATA: RequestedPlan[] = [
         day: "Monday",
         exercises: [
           {
-            exerciseName: "Squats",
+            exercise: "Squats",
             frequency: {
               sets: 3,
               reps: 10,
             },
           },
           {
-            exerciseName: "Kettlebell Swings",
+            exercise: "Kettlebell Swings",
             frequency: {
               sets: 3,
               reps: 10,
             },
           },
           {
-            exerciseName: "Leg Press",
+            exercise: "Leg Press",
             frequency: {
               sets: 3,
               reps: 10,
@@ -145,21 +147,21 @@ export const REQUESTED_PLANS_DATA: RequestedPlan[] = [
         day: "Wednesday",
         exercises: [
           {
-            exerciseName: "Bench Press",
+            exercise: "Bench Press",
             frequency: {
               sets: 3,
               reps: 10,
             },
           },
           {
-            exerciseName: "Shoulder Press",
+            exercise: "Shoulder Press",
             frequency: {
               sets: 3,
               reps: 10,
             },
           },
           {
-            exerciseName: "Tricep Extension",
+            exercise: "Tricep Extension",
             frequency: {
               sets: 3,
               reps: 10,
@@ -236,21 +238,21 @@ export const REQUESTED_PLANS_DATA: RequestedPlan[] = [
         day: "Monday",
         exercises: [
           {
-            exerciseName: "Squats",
+            exercise: "Squats",
             frequency: {
               sets: 3,
               reps: 10,
             },
           },
           {
-            exerciseName: "Kettlebell Swings",
+            exercise: "Kettlebell Swings",
             frequency: {
               sets: 3,
               reps: 10,
             },
           },
           {
-            exerciseName: "Leg Press",
+            exercise: "Leg Press",
             frequency: {
               sets: 3,
               reps: 10,
@@ -266,21 +268,21 @@ export const REQUESTED_PLANS_DATA: RequestedPlan[] = [
         day: "Wednesday",
         exercises: [
           {
-            exerciseName: "Bench Press",
+            exercise: "Bench Press",
             frequency: {
               sets: 3,
               reps: 10,
             },
           },
           {
-            exerciseName: "Shoulder Press",
+            exercise: "Shoulder Press",
             frequency: {
               sets: 3,
               reps: 10,
             },
           },
           {
-            exerciseName: "Tricep Extension",
+            exercise: "Tricep Extension",
             frequency: {
               sets: 3,
               reps: 10,
@@ -308,93 +310,182 @@ export const REQUESTED_PLANS_DATA: RequestedPlan[] = [
 export const PLAN: IDayExercisePlan[] = [
   {
     day: "Monday",
+    isRest: false,
     exercises: [
       {
-        exerciseName: "Squats",
+        exercise: "Bench Press",
         frequency: {
           sets: 3,
           reps: 10,
         },
       },
       {
-        exerciseName: "Kettlebell Swings",
+        exercise: "Tricep Dips",
         frequency: {
           sets: 3,
-          reps: 10,
+          reps: 15,
         },
       },
       {
-        exerciseName: "Leg Press",
+        exercise: "Running (Treadmill)",
         frequency: {
-          sets: 3,
-          reps: 10,
+          duration: 30,
         },
       },
     ],
   },
   {
     day: "Tuesday",
+    isRest: false,
     exercises: [
       {
-        exerciseName: "Bench Press",
+        exercise: "Pull-Ups",
         frequency: {
           sets: 3,
           reps: 10,
         },
       },
       {
-        exerciseName: "Shoulder Press",
+        exercise: "Bent-Over Barbell Rows",
         frequency: {
           sets: 3,
           reps: 10,
         },
       },
       {
-        exerciseName: "Tricep Extension",
+        exercise: "Cycling (Stationary Bike)",
         frequency: {
-          sets: 3,
-          reps: 10,
+          duration: 30,
         },
       },
     ],
   },
   {
     day: "Wednesday",
+    isRest: true,
+    exercises: [],
+  },
+  {
+    day: "Thursday",
+    isRest: false,
     exercises: [
       {
-        exerciseName: "Bench Press",
+        exercise: "Squats",
+        frequency: {
+          sets: 3,
+          reps: 12,
+        },
+      },
+      {
+        exercise: "Lunges",
+        frequency: {
+          sets: 3,
+          reps: 12,
+        },
+      },
+      {
+        exercise: "Rowing Machine",
+        frequency: {
+          duration: 30,
+        },
+      },
+    ],
+  },
+  {
+    day: "Friday",
+    isRest: false,
+    exercises: [
+      {
+        exercise: "Military Press",
         frequency: {
           sets: 3,
           reps: 10,
         },
       },
       {
-        exerciseName: "Shoulder Press",
+        exercise: "Lateral Raises",
+        frequency: {
+          sets: 3,
+          reps: 12,
+        },
+      },
+      {
+        exercise: "Elliptical Trainer",
+        frequency: {
+          duration: 30,
+        },
+      },
+    ],
+  },
+  {
+    day: "Saturday",
+    isRest: true,
+    exercises: [],
+  },
+  {
+    day: "Sunday",
+    isRest: false,
+    exercises: [
+      {
+        exercise: "Deadlifts",
         frequency: {
           sets: 3,
           reps: 10,
         },
       },
       {
-        exerciseName: "Tricep Extension",
+        exercise: "Seated Cable Rows",
         frequency: {
           sets: 3,
-          reps: 10,
+          reps: 12,
+        },
+      },
+      {
+        exercise: "Jump Rope",
+        frequency: {
+          duration: 15,
         },
       },
     ],
   },
 ];
 
-export interface IExercise {
-  exerciseName: string;
-  frequency: {
-    sets: number;
-    reps: number;
-  };
-}
 
-export interface IDayExercisePlan {
-  day: string;
-  exercises?: IExercise[];
-}
+
+export const members = [
+  {
+    id: "66af479c34815a0061bf8ab9",
+    name: "John Doe1",
+  },
+  {
+    id: 2,
+    name: "John Doe2",
+  },
+  {
+    id: 3,
+    name: "John Doe3",
+  },
+  {
+    id: 4,
+    name: "John Doe4",
+  },
+];
+
+export const trainer = [
+  {
+    id: "66af479c34815a0061bf8ab9",
+    name: "Trainer 1",
+  },
+  {
+    id: 2,
+    name: "Trainer 2",
+  },
+  {
+    id: 3,
+    name: "Trainer 3",
+  },
+  {
+    id: 4,
+    name: "Trainer 4",
+  },
+];
