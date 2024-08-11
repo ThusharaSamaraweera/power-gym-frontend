@@ -194,7 +194,7 @@ export const CARDIO_EXERCISES = [
   "Stair Climber",
 ];
 
-export interface ProgressRecord {
+export interface ProgressRecordInfo {
   anthropometricMeasurements: {
     weight: string;
     height: string;
@@ -218,4 +218,12 @@ export interface ProgressRecord {
     reps: string;
     oneRepMax: string;
   };
-} 
+}
+
+export interface IProgressRecord {
+  _id: string;
+  memberId: string;
+  progressRecord: ProgressRecordInfo;
+  note: string;
+  createdAt: string;
+}
