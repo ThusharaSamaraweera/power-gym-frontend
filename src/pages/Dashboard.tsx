@@ -1,9 +1,23 @@
-import React from 'react'
+import React, { useEffect } from "react";
+import { useAppSelector } from "../state/hooks";
+import { getProgressRecordsByUserId } from "../services/progrssRecord.service";
 
 const Dashboard = () => {
-  return (
-    <div>Dashboard</div>
-  )
-}
+  const user = useAppSelector((state) => state.global.user);
+  const [progressRecordList, setProgressRecordList] = React.useState([]);
 
-export default Dashboard
+  useEffect(() => {
+    async function getProgressRecords() {
+      if (!user) throw new Error("User not found");
+      const res = await getProgressRecordsByUserId(user?._id);
+      console.log("🚀 ~ file: ProgressRecordsPage.tsx:44 ~ getProgressRecords ~ res:", res);
+      setProgressRecordList(res);
+    }
+
+    getProgressRecords();
+  }, [user]);
+  
+  return <div>Dashboard</div>;
+};
+
+export default Dashboard;
