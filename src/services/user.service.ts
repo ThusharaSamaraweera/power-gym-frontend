@@ -41,6 +41,11 @@ const getUserWithBodyHealthInfo = async (trainerId: string | undefined = undefin
   return res?.data;
 };
 
+const updateUser = async (userId: string, payload: any) => {
+  const res  = await restClient(HTTPS_METHODS.PUT, `/users/${userId}`, payload);
+  return res?.data
+}
+
 export default {
   signUp,
   getUserByClerkId,
@@ -48,4 +53,5 @@ export default {
   getExercisePlansByUserId,
   getUsers,
   getUserWithBodyHealthInfo,
+  updateUser
 };

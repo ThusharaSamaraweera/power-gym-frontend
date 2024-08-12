@@ -104,20 +104,6 @@ const AllUsers = () => {
             }}
             columns={columns}
             >
-            {/* <Column title='Name' dataIndex='name' key='name' />
-            <Column title='Phone' dataIndex='phone' key='phone' />
-            <Column title='Phone' dataIndex='phone' key='phone' />
-            <Column title='Trainer' dataIndex='trainer' key='trainer' />
-            <Column
-              title='User Type'
-              dataIndex='userType'
-              key='userType'
-              render={(tag: string) => (
-                <>
-                  <Tag key={tag}>{tag.toUpperCase()}</Tag>
-                </>
-              )}
-            /> */}
           </Table>
         </CardContent>
       </Card>
