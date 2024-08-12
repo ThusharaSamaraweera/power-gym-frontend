@@ -17,6 +17,7 @@ import { Provider as ReduxProvider } from "react-redux";
 import store from "./state/store.ts";
 import UserPage from "./pages/UserPage.tsx";
 import ProgressRecordsPage from "./pages/ProgressRecordsPage.tsx";
+import Dashboard from "./pages/Dashboard.tsx";
 
 // Import your publishable key
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
@@ -30,6 +31,11 @@ const router = createBrowserRouter([
     path: "/",
     element: <App />,
     children: [
+      {
+        path: "/dashboard",
+        index: true,
+        element: <Dashboard />
+      },
       {
         path: "/profile",
         element: <Profile />,

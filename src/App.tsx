@@ -1,12 +1,12 @@
 import "./App.css";
 import { TooltipProvider } from "./components/ui/tooltip";
-import Dashboard from "./pages/Dashboard";
+import MainLayout from "./pages/MainLayout";
 
 function App() {
   return (
     <>
       <TooltipProvider>
-        <Dashboard />
+        <MainLayout />
       </TooltipProvider>
     </>
   );
