@@ -1,5 +1,4 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../components/ui/card";
-// import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../components/ui/table";
 import { REQUESTED_PLANS_DATA } from "../assets/data";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -8,13 +7,14 @@ import { useAppDispatch, useAppSelector } from "../state/hooks";
 import { setRequestedPlans } from "../state/global/globalSlice";
 import { IBodyHealthInfo } from "../models";
 import { Table, TableColumnsType } from "antd";
+import moment from "moment";
 
 interface IRequestedPlanRow {
   key: string;
   name: string;
   createdAt: string;
-  record: IBodyHealthInfo;
 }
+
 const columns: TableColumnsType<IRequestedPlanRow> = [
   {
     title: "Name",
@@ -40,10 +40,10 @@ const RequestedPlansTable = () => {
       if (!user) return;
 
       const res = await trainerService.getExercisePlanRequests(user?._id);
-      const data: IRequestedPlanRow = res?.map((plan) => ({ ...plan, key: plan._id }));
+      const data: IRequestedPlanRow[] = res?.map((plan) => ({ name: plan?.memberId?.name, key: plan._id, createdAt: moment(plan.createdAt).format('LLL') }));
 
-      dispatch(setRequestedPlans(data));
-      setRequestedPlanList(res);
+      dispatch(setRequestedPlans(res));
+      setRequestedPlanList(data);
       setLoading(false);
       console.log("🚀 ~ file: RequestedPlansTable.tsx:19 ~ fetchData ~ res:", res);
     }
@@ -72,26 +72,7 @@ const RequestedPlansTable = () => {
                 onClick: () => handleOnClickRow(record.key),
               };
             }}></Table>
-          {/* <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead className='hidden w-[100px] sm:table-cell'>
-                  <span className='sr-only'>Image</span>
-                </TableHead>
-                <TableHead>Name</TableHead>
-                <TableHead>Created at</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {requestedPlanList?.map((plan, i) => (
-                <TableRow key={i} className='cursor-pointer' onClick={() => handleOnClickRow(plan?._id)}>
-                  <TableCell className='hidden sm:table-cell'></TableCell>
-                  <TableCell className='font-medium'>{plan?.memberId?.name}</TableCell>
-                  <TableCell className='hidden md:table-cell'>{plan?.createdAt}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table> */}
+        
         </CardContent>
       </Card>
     </div>
