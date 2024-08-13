@@ -69,9 +69,11 @@ const MainLayout = () => {
         <nav className='flex flex-col items-center gap-4 px-2 sm:py-4'>
           <Link
             to='#'
-            className='group flex h-9 w-9 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:h-8 md:w-8 md:text-base'>
-            <Package2 className='h-4 w-4 transition-all group-hover:scale-110' />
-            <span className='sr-only'>Acme Inc</span>
+            className='group flex h-9 w-9 shrink-0 items-center justify-center gap-2 rounded-full text-lg font-semibold text-primary-foreground md:h-8 md:w-8 md:text-base'>
+            {/* <img className='h-4 w-4 transition-all group-hover:scale-110' /> */}
+            <img src='/logo.png' alt='logo' className='h-8 w-auto transition-all group-hover:scale-110' />
+
+            <span className='sr-only'>Power Gym</span>
           </Link>
           <Tooltip>
             <TooltipTrigger asChild>
@@ -157,9 +159,9 @@ const MainLayout = () => {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align='end'>
-              <DropdownMenuLabel>My Account</DropdownMenuLabel>
+              <DropdownMenuLabel>{userInState?.email}</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={handleOnClickProfile}>Profile</DropdownMenuItem>
+              {/* <DropdownMenuItem onClick={handleOnClickProfile}>Profile</DropdownMenuItem> */}
               <DropdownMenuSeparator />
               <DropdownMenuItem>
                 <div>

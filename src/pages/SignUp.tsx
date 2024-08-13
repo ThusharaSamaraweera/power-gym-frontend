@@ -3,10 +3,16 @@ import { useSignUp } from "@clerk/clerk-react";
 import { useNavigate } from "react-router-dom";
 import userService from "../services/user.service";
 import { SignupUser, UserRoles } from "../models";
+import { Radio } from "antd";
 
+const userRoleOptions = [
+  { label: "Member", value: UserRoles.MEMBER },
+  { label: "Coach", value: UserRoles.TRAINER },
+];
 const SignUp = () => {
   const { isLoaded, signUp, setActive } = useSignUp();
   const [email, setEmail] = useState("");
+  const [userRole, setUserRole] = useState(UserRoles.MEMBER);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [password, setPassword] = useState("");
@@ -54,7 +60,6 @@ const SignUp = () => {
         code,
       });
       if (completeSignUp.status !== "complete") {
-
         console.log(JSON.stringify(completeSignUp, null, 2));
       }
       if (completeSignUp.status === "complete") {
@@ -62,11 +67,11 @@ const SignUp = () => {
 
         const payload: SignupUser = {
           name: `${completeSignUp?.firstName} ${completeSignUp?.lastName}`,
-          email: completeSignUp?.emailAddress ?? '',
-          role: UserRoles.MEMBER,
+          email: completeSignUp?.emailAddress ?? "",
+          role: UserRoles.TRAINER,
           clerkUserId: completeSignUp?.createdUserId ?? "",
         };
-        await userService.signUp(payload)
+        await userService.signUp(payload);
         navigate("/login");
       }
     } catch (err) {
@@ -74,12 +79,26 @@ const SignUp = () => {
     }
   };
 
+  const handleOnChangeUser = (e: any) => {
+    setUserRole(e.target.value);
+  };
+
   return (
-    <div className='border p-5 rounded h-screen w-full flex items-center'>
+    <div className='border rounded h-screen w-full flex items-center'>
       <div className='w-1/2 px-10'>
-        <h1 className='text-2xl mb-4'>Register</h1>
+        <div className='flex gap-4 h-20 justify-center'>
+          <img src='/logo.png' alt='logo' className='w-20 h-auto' />
+          <div className='flex items-center'>
+            <div className='text-4xl font-bold border-red-500 border-solid border-b-4'>POWER GYM</div>
+          </div>
+        </div>
+        <div className='text-lg text-center mb-8 text-gray-500 font-medium pb-2'>Enter your details below to create your account</div>
         {!pendingVerification && (
           <form onSubmit={handleSubmit} className='space-y-4 md:space-y-6'>
+            <div className='flex gap-5 items-center'>
+              <label className='block text-xl text-gray-900 font-semibold'>I want to register as a </label>
+              <Radio.Group options={userRoleOptions} onChange={handleOnChangeUser} value={userRole} optionType='button' buttonStyle='solid' />
+            </div>
             <div>
               <label htmlFor='firstName' className='block mb-2 text-sm font-medium text-gray-900'>
                 First Name
@@ -156,6 +175,9 @@ const SignUp = () => {
             </form>
           </div>
         )}
+      </div>
+      <div className='w-1/2'>
+        <img src='/sign-up-image.png' alt='signup' className='h-screen w-full object-cover' />
       </div>
     </div>
   );
