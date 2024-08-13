@@ -18,7 +18,6 @@ const ExercisePlans = () => {
 
       const res = await userService.getExercisePlansByUserId(user?._id);
       console.log("🚀 ~ file: ExercisePlans.tsx:19 ~ fetchData ~ res:", res);
-      console.log("🚀 ~ file: ExercisePlans.tsx:24 ~ fetchData ~ res:", res);
       setPlans(res);
       setCurrentPlan(res[0]);
     }
