@@ -74,4 +74,7 @@ body {
   cursor: pointer;
 }
 
-
+.current-exercise-plan-img {
+  border-radius: 60px;
+  height: 80vh;
+}

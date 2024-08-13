@@ -85,7 +85,7 @@ const SignUp = () => {
 
   return (
     <div className='border rounded h-screen w-full flex items-center'>
-      <div className='w-1/2 px-10'>
+      <div className='w-2/3 w-1/2 px-10'>
         <div className='flex gap-4 h-20 justify-center'>
           <img src='/logo.png' alt='logo' className='w-20 h-auto' />
           <div className='flex items-center'>
@@ -95,7 +95,7 @@ const SignUp = () => {
         <div className='text-lg text-center mb-8 text-gray-500 font-medium pb-2'>Enter your details below to create your account</div>
         {!pendingVerification && (
           <form onSubmit={handleSubmit} className='space-y-4 md:space-y-6'>
-            <div className='flex gap-5 items-center'>
+            <div className='flex flex-col lg:flex-row gap-5 items-center'>
               <label className='block text-xl text-gray-900 font-semibold'>I want to register as a </label>
               <Radio.Group options={userRoleOptions} onChange={handleOnChangeUser} value={userRole} optionType='button' buttonStyle='solid' />
             </div>

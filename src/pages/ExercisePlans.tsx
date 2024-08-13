@@ -34,12 +34,12 @@ const ExercisePlans = () => {
         <div className='text-2xl font-semibold leading-none tracking-tight'>Current Exercise Plan</div>
         {/* <Button onClick={navigateToAllPlans}>All Plans</Button> */}
       </div>
-      <div className='w-full flex'>
-        <div className='w-1/2'>
+      <div className='w-full flex gap-11'>
+        <div className='w-full md:w-2/3 lg:w-1/2'>
           <ExercisePlan currentPlan={currentPlan} />
         </div>
-        <div className='basis-1/2'>
-          <img src='/img2.jpg' alt='signup' className='h-screen w-full object-cover' />
+        <div className='hidden md:block md:w-1/3 lg:w-1/2'>
+          <img src='/img2.jpg' alt='signup' className='w-full object-cover current-exercise-plan-img' />
         </div>
       </div>
     </div>
