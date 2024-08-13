@@ -51,8 +51,8 @@ interface ExercisePlanProps {
 
 const ExercisePlan: React.FC<ExercisePlanProps> = ({ currentPlan }) => {
   return (
-    <div className='flex'>
-      <div className='basis-1/2'>
+    <div className='flex w-full'>
+      <div className='w-full'>
         <Card x-chunk='dashboard-06-chunk-0 h-full'>
           <CardContent className='h-screen'>
             <ScrollArea className='h-5/6 w-100 rounded-md px-2'>
@@ -65,7 +65,6 @@ const ExercisePlan: React.FC<ExercisePlanProps> = ({ currentPlan }) => {
           </CardContent>
         </Card>
       </div>
-      <div className='basis-1/2'></div>
     </div>
   );
 };
