@@ -96,7 +96,7 @@ const SignUp = () => {
         {!pendingVerification && (
           <form onSubmit={handleSubmit} className='space-y-4 md:space-y-6'>
             <div className='flex gap-5 items-center'>
-              <label className='block text-xl text-gray-900 font-semibold'>I am </label>
+              <label className='block text-xl text-gray-900 font-semibold'>I want to register as a </label>
               <Radio.Group options={userRoleOptions} onChange={handleOnChangeUser} value={userRole} optionType='button' buttonStyle='solid' />
             </div>
             <div>
