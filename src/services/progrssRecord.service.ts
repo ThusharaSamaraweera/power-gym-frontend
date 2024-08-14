@@ -1,4 +1,4 @@
-import { ProgressRecordInfo } from "../models";
+import { IProgressRecord, ProgressRecordInfo } from "../models";
 import { HTTPS_METHODS, restClient } from "../utils/restClient";
 
 export const createProgressRecord = async (memberId: string, progressRecord: any) => {
@@ -7,7 +7,7 @@ export const createProgressRecord = async (memberId: string, progressRecord: any
   return res.data;
 };
 
-export const getProgressRecordsByUserId = async (memberId: string) => {
+export const getProgressRecordsByUserId = async (memberId: string):Promise<IProgressRecord[]> => {
   const res = await restClient(HTTPS_METHODS.GET, `users/${memberId}/progressRecords`);
   return res.data;
 };
