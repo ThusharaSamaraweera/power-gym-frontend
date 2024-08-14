@@ -1,12 +1,13 @@
 import React, { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../state/hooks";
 import userService from "../services/user.service";
-import { UserRoles } from "../models";
+import { IProgressRecord, UserRoles } from "../models";
 import { Table, TableColumnsType, Tag } from "antd";
 import Column from "antd/es/table/Column";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../components/ui/card";
 import { setAllUsers } from "../state/global/globalSlice";
 import { useNavigate } from "react-router-dom";
+import UserChart from "../components/organisms/UserChart";
 
 interface IUserRow {
   key: string;
@@ -61,6 +62,7 @@ const AllUsers = () => {
   const navigate = useNavigate()
   const [userList, setUserList] = React.useState<IUserRow[]>([]);
   const [loading, setLoading] = React.useState(false);
+  const [progressRecordList, setProgressRecordList] = React.useState<IProgressRecord[]>([])
 
   useEffect(() => {
     async function getUsers() {
@@ -80,6 +82,7 @@ const AllUsers = () => {
         }))
       );
       setLoading(false)
+      setProgressRecordList(res)
       dispatch(setAllUsers(res));
     }
     getUsers();
@@ -97,6 +100,9 @@ const AllUsers = () => {
           <CardDescription></CardDescription>
         </CardHeader>
         <CardContent>
+          {/* <div className="flex flex-col"> */}
+
+          {/* <UserChart progressRecordList={progressRecordList} /> */}
           <Table
           loading={loading}
             dataSource={userList}
@@ -108,6 +114,7 @@ const AllUsers = () => {
             columns={columns}
             >
           </Table>
+          {/* </div> */}
         </CardContent>
       </Card>
     </div>
