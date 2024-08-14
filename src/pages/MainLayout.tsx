@@ -61,8 +61,6 @@ const MainLayout = () => {
     navigate("/profile");
   };
 
-
-
   return (
     <div className='flex min-h-screen w-full flex-col bg-muted/40'>
       <aside className='fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r bg-background sm:flex'>
@@ -125,29 +123,32 @@ const MainLayout = () => {
             <TooltipContent side='right'>Progress Record</TooltipContent>
           </Tooltip>
 
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Link
-                to={"/all-users"}
-                className='flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8'>
-                <User className='h-5 w-5' />
-                <span className='sr-only'>All Users</span>
-              </Link>
-            </TooltipTrigger>
-            <TooltipContent side='right'>All Users</TooltipContent>
-          </Tooltip>
-
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Link
-                to={"/requested-plans"}
-                className='flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8'>
-                <ListTodo className='h-5 w-5' />
-                <span className='sr-only'>Request Plans</span>
-              </Link>
-            </TooltipTrigger>
-            <TooltipContent side='right'>Request Plans</TooltipContent>
-          </Tooltip>
+          <ProtectedWrapper roles={[UserRoles.TRAINER, UserRoles.ADMIN]}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Link
+                  to={"/all-users"}
+                  className='flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8'>
+                  <User className='h-5 w-5' />
+                  <span className='sr-only'>All Users</span>
+                </Link>
+              </TooltipTrigger>
+              <TooltipContent side='right'>All Users</TooltipContent>
+            </Tooltip>
+          </ProtectedWrapper>
+          <ProtectedWrapper roles={[UserRoles.TRAINER]}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Link
+                  to={"/requested-plans"}
+                  className='flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8'>
+                  <ListTodo className='h-5 w-5' />
+                  <span className='sr-only'>Request Plans</span>
+                </Link>
+              </TooltipTrigger>
+              <TooltipContent side='right'>Request Plans</TooltipContent>
+            </Tooltip>
+          </ProtectedWrapper>
         </nav>
       </aside>
       <div className='flex flex-col sm:gap-4 sm:py-4 sm:pl-20 sm:pr-8 min-h-screen'>

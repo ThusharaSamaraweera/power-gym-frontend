@@ -68,7 +68,7 @@ const SignUp = () => {
         const payload: SignupUser = {
           name: `${completeSignUp?.firstName} ${completeSignUp?.lastName}`,
           email: completeSignUp?.emailAddress ?? "",
-          role: UserRoles.TRAINER,
+          role: userRole,
           clerkUserId: completeSignUp?.createdUserId ?? "",
         };
         await userService.signUp(payload);
