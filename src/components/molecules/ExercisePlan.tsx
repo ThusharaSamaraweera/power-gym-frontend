@@ -4,6 +4,7 @@ import { Card, CardContent } from "../ui/card";
 import imageSrc from "../../assets/Arnold Press.jpg";
 import { CARDIO_EXERCISES, IBodyHealthInfo, IDayExercisePlan, IWorkoutPlan } from "../../models";
 import { ScrollArea } from "../ui/scroll-area";
+import { EXERCISE_IMAGES } from "../../constant";
 
 interface IOneDayProps {
   dayExercise: IDayExercisePlan;
@@ -20,10 +21,10 @@ const OneDay: React.FC<IOneDayProps> = ({ dayExercise }) => {
           <ul>
             {dayExercise?.exercises?.map((exercise) => {
               const isCarDioExercise = CARDIO_EXERCISES.includes(exercise?.exercise);
-
+              const img = EXERCISE_IMAGES[exercise?.exercise]
               return (
-                <div className='flex'>
-                  <img src={imageSrc} className='w-24' />
+                <div className='flex items-center'>
+                  <img src={img} className='w-24' />
                   <li key={exercise.exercise} className='flex gap-3'>
                     <span>{exercise.exercise} : </span>
                     {isCarDioExercise ? (
@@ -50,8 +51,8 @@ interface ExercisePlanProps {
 
 const ExercisePlan: React.FC<ExercisePlanProps> = ({ currentPlan }) => {
   return (
-    <div className='flex'>
-      <div className='basis-1/2'>
+    <div className='flex w-full'>
+      <div className='w-full'>
         <Card x-chunk='dashboard-06-chunk-0 h-full'>
           <CardContent className='h-screen'>
             <ScrollArea className='h-5/6 w-100 rounded-md px-2'>
@@ -64,7 +65,6 @@ const ExercisePlan: React.FC<ExercisePlanProps> = ({ currentPlan }) => {
           </CardContent>
         </Card>
       </div>
-      <div className='basis-1/2'></div>
     </div>
   );
 };

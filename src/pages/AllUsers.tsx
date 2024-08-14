@@ -60,9 +60,11 @@ const AllUsers = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate()
   const [userList, setUserList] = React.useState<IUserRow[]>([]);
+  const [loading, setLoading] = React.useState(false);
 
   useEffect(() => {
     async function getUsers() {
+      setLoading(true)
       let trainerId;
       if (user?.role === UserRoles.TRAINER) trainerId = user?._id;
 
@@ -77,9 +79,9 @@ const AllUsers = () => {
           userType: user.role,
         }))
       );
+      setLoading(false)
       dispatch(setAllUsers(res));
     }
-
     getUsers();
   }, [user]);
 
@@ -96,6 +98,7 @@ const AllUsers = () => {
         </CardHeader>
         <CardContent>
           <Table
+          loading={loading}
             dataSource={userList}
             onRow={(record) => {
               return {
@@ -104,20 +107,6 @@ const AllUsers = () => {
             }}
             columns={columns}
             >
-            {/* <Column title='Name' dataIndex='name' key='name' />
-            <Column title='Phone' dataIndex='phone' key='phone' />
-            <Column title='Phone' dataIndex='phone' key='phone' />
-            <Column title='Trainer' dataIndex='trainer' key='trainer' />
-            <Column
-              title='User Type'
-              dataIndex='userType'
-              key='userType'
-              render={(tag: string) => (
-                <>
-                  <Tag key={tag}>{tag.toUpperCase()}</Tag>
-                </>
-              )}
-            /> */}
           </Table>
         </CardContent>
       </Card>
