@@ -134,30 +134,37 @@ const Dashboard = () => {
 
             <div className="grid grid-cols-2 gap-4 mt-4">
               <div className="col-span-2 md:col-span-1">
-                <Bar
-                  data={cardiovascularFitnessData}
-                  options={{
-                    responsive: true,
-                    plugins: {
-                      legend: { position: "top" },
-                      title: { display: true, text: "Cardiovascular Fitness" },
-                    },
-                  }}
-                />
+                <div className="chart-container h-96">  {/* Adjust the height here */}
+                  <Bar
+                    data={cardiovascularFitnessData}
+                    options={{
+                      responsive: true,
+                      maintainAspectRatio: false,
+                      plugins: {
+                        legend: { position: "top" },
+                        title: { display: true, text: "Cardiovascular Fitness" },
+                      },
+                    }}
+                  />
+                </div>
               </div>
               <div className="col-span-2 md:col-span-1">
-                <Pie
-                  data={repsData}
-                  options={{
-                    responsive: true,
-                    plugins: {
-                      legend: { position: "top" },
-                      title: { display: true, text: "Reps Distribution" },
-                    },
-                  }}
-                />
+                <div className="chart-container h-96">  {/* Same height as above */}
+                  <Pie
+                    data={repsData}
+                    options={{
+                      responsive: true,
+                      maintainAspectRatio: false,
+                      plugins: {
+                        legend: { position: "top" },
+                        title: { display: true, text: "Reps Distribution" },
+                      },
+                    }}
+                  />
+                </div>
               </div>
             </div>
+
           </ScrollArea>
         </CardContent>
       </Card>
