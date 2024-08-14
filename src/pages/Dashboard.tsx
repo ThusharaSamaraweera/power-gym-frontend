@@ -1,15 +1,17 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useAppSelector } from "../state/hooks";
 import { getProgressRecordsByUserId } from "../services/progrssRecord.service";
 import { Bar, Line, Pie } from "react-chartjs-2";
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, PointElement, LineElement, ArcElement } from "chart.js";
+import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
+import { ScrollArea } from "../components/ui/scroll-area";
 
 // Register the necessary chart components
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, PointElement, LineElement, ArcElement);
 
 const Dashboard = () => {
   const user = useAppSelector((state) => state.global.user);
-  const [progressRecordList, setProgressRecordList] = React.useState([]);
+  const [progressRecordList, setProgressRecordList] = useState([]);
 
   useEffect(() => {
     async function getProgressRecords() {
@@ -96,25 +98,69 @@ const Dashboard = () => {
   };
 
   return (
-    <div>
-      <h1>Dashboard</h1>
-      <div style={{ display: "flex", flexWrap: "wrap" }}>
-        <div style={{ flex: "1 1 50%", padding: "10px" }}>
-          <Bar data={anthropometricData} options={{ responsive: true, plugins: { legend: { position: 'top' }, title: { display: true, text: 'Anthropometric Measurements' } }}} />
-        </div>
-        <div style={{ flex: "1 1 50%", padding: "10px" }}>
-          <Line data={bodyCompositionData} options={{ responsive: true, plugins: { legend: { position: 'top' }, title: { display: true, text: 'Body Composition' } }}} />
-        </div>
-      </div>
+    <div className="w-100 h-screen">
+      <Card className="h-5/6">
+        <CardHeader>
+          <CardTitle>Dashboard</CardTitle>
+        </CardHeader>
+        <CardContent className="w-full h-full">
+          <ScrollArea className="w-100 h-4/6 rounded-md px-2">
+            <div className="grid grid-cols-2 gap-4">
+              <div className="col-span-2 md:col-span-1">
+                <Bar
+                  data={anthropometricData}
+                  options={{
+                    responsive: true,
+                    plugins: {
+                      legend: { position: "top" },
+                      title: { display: true, text: "Anthropometric Measurements" },
+                    },
+                  }}
+                />
+              </div>
+              <div className="col-span-2 md:col-span-1">
+                <Line
+                  data={bodyCompositionData}
+                  options={{
+                    responsive: true,
+                    plugins: {
+                      legend: { position: "top" },
+                      title: { display: true, text: "Body Composition" },
+                    },
+                  }}
+                />
+              </div>
+            </div>
 
-      <div style={{ display: "flex", flexWrap: "wrap" }}>
-        <div style={{ flex: "1 1 50%", padding: "10px" }}>
-          <Bar data={cardiovascularFitnessData} options={{ responsive: true, plugins: { legend: { position: 'top' }, title: { display: true, text: 'Cardiovascular Fitness' } }}} />
-        </div>
-        <div style={{ flex: "1 1 50%", padding: "10px" }}>
-          <Pie data={repsData} options={{ responsive: true, plugins: { legend: { position: 'top' }, title: { display: true, text: 'Reps Distribution' } }}} />
-        </div>
-      </div>
+            <div className="grid grid-cols-2 gap-4 mt-4">
+              <div className="col-span-2 md:col-span-1">
+                <Bar
+                  data={cardiovascularFitnessData}
+                  options={{
+                    responsive: true,
+                    plugins: {
+                      legend: { position: "top" },
+                      title: { display: true, text: "Cardiovascular Fitness" },
+                    },
+                  }}
+                />
+              </div>
+              <div className="col-span-2 md:col-span-1">
+                <Pie
+                  data={repsData}
+                  options={{
+                    responsive: true,
+                    plugins: {
+                      legend: { position: "top" },
+                      title: { display: true, text: "Reps Distribution" },
+                    },
+                  }}
+                />
+              </div>
+            </div>
+          </ScrollArea>
+        </CardContent>
+      </Card>
     </div>
   );
 };
